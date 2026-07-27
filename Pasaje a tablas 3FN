@@ -1,0 +1,109 @@
+
+ROL
+ROL(
+id_rol (PK)
+nombre
+)
+CENTRO_ACOPIO
+CENTRO_ACOPIO(
+id_centro_acopio (PK)
+nombre
+dirección
+capacidad
+)
+USUARIO
+USUARIO(
+id_usuario (PK)
+nombre
+apellido
+teléfono
+email
+estado
+contraseña
+id_rol (FK)
+id_centro_acopio (FK)
+)
+TIPO_RESIDUO
+TIPO_RESIDUO(
+id_tipo_residuo (PK)
+nombre
+)
+RUTA
+RUTA(
+id_ruta (PK)
+nombre
+zona
+frecuencia
+)
+
+CONTENEDOR
+CONTENEDOR(
+id_contenedor (PK)
+código
+ubicación
+estado
+capacidad
+id_tipo_residuo (FK)
+id_ruta (FK)
+)
+
+CUADRILLA
+CUADRILLA(
+id_cuadrilla (PK)
+nombre
+turno
+id_ruta (FK)
+)
+
+CAMION
+CAMION(
+id_camion (PK)
+matrícula
+modelo
+capacidad
+estado
+id_cuadrilla (FK)
+)
+
+INCIDENCIA
+INCIDENCIA(
+id_incidencia (PK)
+fecha
+descripción
+estado
+prioridad
+id_usuario (FK)
+id_contenedor (FK)
+id_cuadrilla (FK)
+)
+
+
+
+
+
+
+
+
+
+
+Relaciones
+
+ROL 1 USUARIO
+- id_rol se almacena como FK en USUARIO.
+CENTRO_ACOPIO 1 USUARIO
+- id_centro_acopio se almacena como FK en USUARIO.
+TIPO_RESIDUO 1 CONTENEDOR
+- id_tipo_residuo se almacena como FK en CONTENEDOR.
+RUTA 1 CONTENEDOR
+- id_ruta se almacena como FK en CONTENEDOR.
+RUTA 1 CUADRILLA
+- id_ruta se almacena como FK en CUADRILLA.
+CUADRILLA 1 CAMION
+- id_cuadrilla se almacena como FK en CAMION.
+USUARIO 1 INCIDENCIA
+- id_usuario se almacena como FK en INCIDENCIA.
+CONTENEDOR 1 INCIDENCIA
+- id_contenedor se almacena como FK en INCIDENCIA.
+CUADRILLA 1 INCIDENCIA
+- id_cuadrilla se almacena como FK en INCIDENCIA.
+
