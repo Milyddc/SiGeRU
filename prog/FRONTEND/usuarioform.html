@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Nuevo Usuario | SiGeRU</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<video class="video-fondo" autoplay muted loop playsinline>
+    <source src="video/montevideo.mp4" type="video/mp4">
+</video>
+
+<div class="video-overlay"></div>
+
+<header>
+
+    <div class="logo">
+    <a href="index.html">
+        <img class="logo-img" src="sigerulogo.png" alt="SiGeRU">
+    </a>
+</div>
+
+    <nav>
+
+        <a href="usuarios.html">
+            Volver
+        </a>
+
+    </nav>
+
+</header>
+
+<section class="login-container">
+
+    <div class="login-card">
+
+        <h1 id="tituloFormulario">
+            Nuevo Usuario
+        </h1>
+
+        <form id="usuarioForm">
+
+            <div class="input-group">
+
+                <label>
+                    Nombre
+                </label>
+
+                <input
+                    type="text"
+                    id="nombre"
+                    required
+                >
+
+            </div>
+
+            <div class="input-group">
+
+                <label>
+                    Apellido
+                </label>
+
+                <input
+                    type="text"
+                    id="apellido"
+                    required
+                >
+
+            </div>
+
+            <div class="input-group">
+
+                <label>
+                    Correo
+                </label>
+
+                <input
+                    type="email"
+                    id="correo"
+                    required
+                >
+
+            </div>
+
+            <div class="input-group">
+
+                <label id="labelPassword">
+                    Contraseña
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                >
+
+            </div>
+
+            <div class="input-group">
+
+                <label>
+                    Rol
+                </label>
+
+                <select id="rol" required>
+
+                    <option value="1">
+                        Administrador
+                    </option>
+
+                    <option value="2">
+                        Cuadrilla
+                    </option>
+
+                    <option value="3">
+                        Operario
+                    </option>
+
+                    <option value="4">
+                        Vecino
+                    </option>
+
+                </select>
+
+            </div>
+
+            <button type="submit" class="btn-login">
+                Guardar Usuario
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
+
+<script src="js/usuarioform.js"></script>
+
+</body>
+</html>
