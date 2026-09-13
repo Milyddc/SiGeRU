@@ -1,109 +1,95 @@
+------------------------------------------------------------------------
+Pasaje a Tablas — SIGERU
+------------------------------------------------------------------------
+Notación: PK = clave primaria, FK = clave foránea.
+------------------------------------------------------------------------
+Rol
 
-ROL
-ROL(
-id_rol (PK)
-nombre
-)
-CENTRO_ACOPIO
-CENTRO_ACOPIO(
-id_centro_acopio (PK)
-nombre
-dirección
-capacidad
-)
-USUARIO
-USUARIO(
-id_usuario (PK)
-nombre
-apellido
-teléfono
-email
-estado
-contraseña
-id_rol (FK)
-id_centro_acopio (FK)
-)
-TIPO_RESIDUO
-TIPO_RESIDUO(
-id_tipo_residuo (PK)
-nombre
-)
-RUTA
-RUTA(
-id_ruta (PK)
-nombre
-zona
-frecuencia
-)
+Campo	Tipo	Restricción
+id_rol	INT	PK
+nombre	VARCHAR(100)	NOT NULL
 
-CONTENEDOR
-CONTENEDOR(
-id_contenedor (PK)
-código
-ubicación
-estado
-capacidad
-id_tipo_residuo (FK)
-id_ruta (FK)
-)
+Centro_Acopio
 
-CUADRILLA
-CUADRILLA(
-id_cuadrilla (PK)
-nombre
-turno
-id_ruta (FK)
-)
+Campo	Tipo	Restricción
+id_centro_acopio	INT	PK
+nombre	VARCHAR(100)	NOT NULL
+direccion	VARCHAR(150)	NOT NULL
+capacidad	DECIMAL(10,2)	NOT NULL
 
-CAMION
-CAMION(
-id_camion (PK)
-matrícula
-modelo
-capacidad
-estado
-id_cuadrilla (FK)
-)
+Usuario
 
-INCIDENCIA
-INCIDENCIA(
-id_incidencia (PK)
-fecha
-descripción
-estado
-prioridad
-id_usuario (FK)
-id_contenedor (FK)
-id_cuadrilla (FK)
-)
+Campo	Tipo	Restricción
+id_usuario	INT	PK
+nombre_completo	VARCHAR(100)	NOT NULL
+telefono	VARCHAR(20)	—
+email	VARCHAR(100)	NOT NULL, UNIQUE
+estado	VARCHAR(50)	NOT NULL
+password	VARCHAR(255)	NOT NULL
+id_rol	INT	FK → Rol(id_rol), NOT NULL
+id_centro_acopio	INT	FK → Centro_Acopio(id_centro_acopio)
 
+Tipo_Residuo
 
+Campo	Tipo	Restricción
+id_tipo_residuo	INT	PK
+nombre	VARCHAR(100)	NOT NULL
 
+Cuadrilla
 
+Campo	Tipo	Restricción
+id_cuadrilla	INT	PK
+nombre	VARCHAR(100)	NOT NULL
+turno	VARCHAR(50)	—
 
+Ruta
 
+Campo	Tipo	Restricción
+id_ruta	INT	PK
+nombre	VARCHAR(100)	NOT NULL
+zona	VARCHAR(100)	NOT NULL
+frecuencia	VARCHAR(100)	—
+id_cuadrilla	INT	FK → Cuadrilla(id_cuadrilla)
 
+Contenedor
 
+Campo	Tipo	Restricción
+id_contenedor	INT	PK
+codigo	VARCHAR(100)	NOT NULL, UNIQUE
+ubicacion	VARCHAR(150)	NOT NULL
+estado	VARCHAR(50)	NOT NULL
+capacidad	DECIMAL(10,2)	NOT NULL
+id_tipo_residuo	INT	FK → Tipo_Residuo(id_tipo_residuo), NOT NULL
+id_ruta	INT	FK → Ruta(id_ruta)
+id_centro_acopio	INT	FK → Centro_Acopio(id_centro_acopio)
 
+Camion
 
-Relaciones
+Campo	Tipo	Restricción
+id_camion	INT	PK
+matricula	VARCHAR(20)	NOT NULL, UNIQUE
+modelo	VARCHAR(100)	—
+capacidad	DECIMAL(10,2)	NOT NULL
+estado	VARCHAR(50)	NOT NULL
+id_cuadrilla	INT	FK → Cuadrilla(id_cuadrilla), NOT NULL
 
-ROL 1 USUARIO
-- id_rol se almacena como FK en USUARIO.
-CENTRO_ACOPIO 1 USUARIO
-- id_centro_acopio se almacena como FK en USUARIO.
-TIPO_RESIDUO 1 CONTENEDOR
-- id_tipo_residuo se almacena como FK en CONTENEDOR.
-RUTA 1 CONTENEDOR
-- id_ruta se almacena como FK en CONTENEDOR.
-RUTA 1 CUADRILLA
-- id_ruta se almacena como FK en CUADRILLA.
-CUADRILLA 1 CAMION
-- id_cuadrilla se almacena como FK en CAMION.
-USUARIO 1 INCIDENCIA
-- id_usuario se almacena como FK en INCIDENCIA.
-CONTENEDOR 1 INCIDENCIA
-- id_contenedor se almacena como FK en INCIDENCIA.
-CUADRILLA 1 INCIDENCIA
-- id_cuadrilla se almacena como FK en INCIDENCIA.
+Cuadrilla_Usuario (tabla asociativa, resuelve la relación N:M "Integra")
 
+Campo	Tipo	Restricción
+id_cuadrilla	INT	PK, FK → Cuadrilla(id_cuadrilla)
+id_usuario	INT	PK, FK → Usuario(id_usuario)
+
+Clave primaria compuesta: (id_cuadrilla, id_usuario)
+
+Incidencia
+
+Campo	Tipo	Restricción
+id_incidencia	INT	PK
+fecha	DATETIME	NOT NULL
+descripcion	TEXT	NOT NULL
+estado	VARCHAR(50)	NOT NULL
+prioridad	VARCHAR(30)	NOT NULL
+id_usuario	INT	FK → Usuario(id_usuario), NOT NULL
+id_contenedor	INT	FK → Contenedor(id_contenedor), NOT NULL
+id_cuadrilla	INT	FK → Cuadrilla(id_cuadrilla)
+------------------------------------------------------------------------
