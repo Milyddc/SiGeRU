@@ -1,0 +1,29 @@
+services:
+
+  web:
+    build: .
+    container_name: sigeru_web
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+    environment:
+      DOCKER_ENV: "true"
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    container_name: sigeru_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: proyecto
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
+
