@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rutas | SiGeRU</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="estilo-extra.css">
+</head>
+<body>
+
+<video class="video-fondo" autoplay muted loop playsinline>
+    <source src="video/montevideo.mp4" type="video/mp4">
+</video>
+
+<div class="video-overlay"></div>
+
+<header>
+    <div class="logo">
+        <a href="/">
+            <img class="logo-img" src="sigerulogo.png" alt="SiGeRU">
+        </a>
+    </div>
+
+    <nav>
+        <a href="dashboard.html">Panel</a>
+        <a href="usuarios.html">Usuarios</a>
+        <a href="contenedores.html">Contenedores</a>
+        <a href="camiones.html">Camiones</a>
+        <a href="centros.html">Centros</a>
+        <a href="rutas.html">Rutas</a>
+        <a href="recorridos.html">Recorridos</a>
+        <a href="mapa.html">Mapa</a>
+        <a href="incidencias.html">Incidencias</a>
+        <a href="informes.html">Informes</a>
+        <a href="#" onclick="cerrarSesion(); return false;">Salir</a>
+    </nav>
+</header>
+
+<section class="page-container">
+
+    <div class="page-header">
+        <h2>Rutas de recolección</h2>
+    </div>
+
+    <form id="rutaForm" class="form-ruta">
+
+        <div class="input-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" required placeholder="Ruta Centro">
+        </div>
+
+        <div class="input-group">
+            <label for="zona">Zona</label>
+            <input type="text" id="zona" required placeholder="Centro">
+        </div>
+
+        <div class="input-group">
+            <label for="frecuencia">Frecuencia</label>
+            <input type="text" id="frecuencia" placeholder="Lunes, Miércoles y Viernes">
+        </div>
+
+        <div class="input-group">
+            <label for="id_cuadrilla">Cuadrilla</label>
+            <select id="id_cuadrilla">
+                <option value="">Sin asignar</option>
+            </select>
+        </div>
+
+        <div class="acciones">
+            <button type="submit" class="btn-login" id="btnGuardar">Guardar ruta</button>
+            <button type="button" class="btn-secundario" id="btnCancelar" hidden>Cancelar</button>
+        </div>
+
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Ruta</th>
+                <th>Zona</th>
+                <th>Frecuencia</th>
+                <th>Cuadrilla</th>
+                <th>Contenedores</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+
+        <tbody id="tablaRutas"></tbody>
+    </table>
+
+</section>
+
+<script src="js/api.js"></script>
+    <script src="js/notificaciones.js"></script>
+<script src="js/rutas.js"></script>
+
+</body>
+</html>

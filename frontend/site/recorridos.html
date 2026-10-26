@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recorridos | SiGeRU</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="estilo-extra.css">
+</head>
+<body>
+
+<video class="video-fondo" autoplay muted loop playsinline>
+    <source src="video/montevideo.mp4" type="video/mp4">
+</video>
+
+<div class="video-overlay"></div>
+
+<header>
+    <div class="logo">
+        <a href="/">
+            <img class="logo-img" src="sigerulogo.png" alt="SiGeRU">
+        </a>
+    </div>
+
+    <nav>
+        <a href="dashboard.html">Panel</a>
+        <a href="contenedores.html">Contenedores</a>
+        <a href="rutas.html">Rutas</a>
+        <a href="recorridos.html">Recorridos</a>
+        <a href="mapa.html">Mapa</a>
+        <a href="incidencias.html">Incidencias</a>
+        <a href="informes.html">Informes</a>
+        <a href="#" onclick="cerrarSesion(); return false;">Salir</a>
+    </nav>
+</header>
+
+<section class="page-container">
+
+    <div class="page-header">
+        <h2>Recorridos de recolección</h2>
+    </div>
+
+    <form id="recorridoForm" class="form-ruta">
+
+        <div class="input-group">
+            <label for="id_ruta">Ruta</label>
+            <select id="id_ruta" required>
+                <option value="">Seleccione una ruta</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label for="id_camion">Camión disponible</label>
+            <select id="id_camion" required>
+                <option value="">Seleccione un camión</option>
+            </select>
+        </div>
+
+        <div class="acciones">
+            <button type="submit" class="btn-login">Iniciar recorrido</button>
+        </div>
+
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Ruta</th>
+                <th>Camión</th>
+                <th>Inicio</th>
+                <th>Fin</th>
+                <th>Estado</th>
+                <th>Volumen (kg)</th>
+                <th>Recursos</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="tablaRecorridos"></tbody>
+    </table>
+
+    <div class="panel-historial" id="panelRecorrido" hidden></div>
+
+</section>
+
+<script src="js/api.js"></script>
+<script src="js/notificaciones.js"></script>
+<script src="js/recorridos.js"></script>
+
+</body>
+</html>

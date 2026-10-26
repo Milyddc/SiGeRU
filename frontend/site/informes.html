@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informes | SiGeRU</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="estilo-extra.css">
+</head>
+<body>
+
+<video class="video-fondo" autoplay muted loop playsinline>
+    <source src="video/montevideo.mp4" type="video/mp4">
+</video>
+
+<div class="video-overlay"></div>
+
+<header>
+    <div class="logo">
+        <a href="/">
+            <img class="logo-img" src="sigerulogo.png" alt="SiGeRU">
+        </a>
+    </div>
+
+    <nav>
+        <a href="dashboard.html">Panel</a>
+        <a href="contenedores.html">Contenedores</a>
+        <a href="rutas.html">Rutas</a>
+        <a href="recorridos.html">Recorridos</a>
+        <a href="mapa.html">Mapa</a>
+        <a href="incidencias.html">Incidencias</a>
+        <a href="informes.html">Informes</a>
+        <a href="#" onclick="cerrarSesion(); return false;">Salir</a>
+    </nav>
+</header>
+
+<section class="page-container">
+
+    <div class="page-header">
+        <h2>Informe de incidencias</h2>
+    </div>
+
+    <div class="filtros-informe">
+        <div>
+            <label for="fEstado">Estado</label>
+            <select id="fEstado">
+                <option value="">Todas</option>
+                <option value="abiertas">Abiertas</option>
+                <option value="cerradas">Cerradas</option>
+            </select>
+        </div>
+        <div>
+            <label for="fZona">Zona</label>
+            <select id="fZona">
+                <option value="">Todas</option>
+            </select>
+        </div>
+        <div>
+            <label for="fDesde">Desde</label>
+            <input type="date" id="fDesde">
+        </div>
+        <div>
+            <label for="fHasta">Hasta</label>
+            <input type="date" id="fHasta">
+        </div>
+        <button type="button" class="btn-login" id="btnGenerar" style="width:auto;margin:0;padding:10px 20px;">Generar informe</button>
+        <button type="button" class="btn-secundario" id="btnCsv">Exportar CSV</button>
+        <button type="button" class="btn-secundario" id="btnImprimir">Imprimir / PDF</button>
+    </div>
+
+    <div class="resumen-informe" id="resumen"></div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Fecha</th>
+                <th>Contenedor</th>
+                <th>Zona</th>
+                <th>Tipo</th>
+                <th>Prioridad</th>
+                <th>Estado</th>
+                <th>Cuadrilla</th>
+                <th>Resolución</th>
+            </tr>
+        </thead>
+        <tbody id="tablaInforme"></tbody>
+    </table>
+
+</section>
+
+<script src="js/api.js"></script>
+<script src="js/notificaciones.js"></script>
+<script src="js/informes.js"></script>
+
+</body>
+</html>

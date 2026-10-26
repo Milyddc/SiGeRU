@@ -1,0 +1,195 @@
+/* Estilos extra para las pantallas Mapa y Rutas (se suman a style.css) */
+
+.filtros-mapa {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    align-items: center;
+    background: rgba(18, 22, 17, 0.93);
+    padding: 14px 20px;
+    border-radius: 14px;
+    margin-bottom: 16px;
+}
+
+.filtros-mapa label {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    cursor: pointer;
+    color: #ddd;
+}
+
+.filtros-mapa .resumen {
+    margin-left: auto;
+    color: #9acb6c;
+    font-weight: bold;
+}
+
+#mapa {
+    height: 68vh;
+    min-height: 420px;
+    border-radius: 18px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+
+.leyenda {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 14px;
+    color: #ddd;
+    font-size: 0.9rem;
+}
+
+.leyenda span.punto {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 6px;
+    vertical-align: middle;
+}
+
+.icono-mapa {
+    font-size: 22px;
+    line-height: 22px;
+    text-align: center;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.8));
+}
+
+.popup-mapa strong { display: block; margin-bottom: 4px; }
+.popup-mapa div { font-size: 0.85rem; }
+
+.form-ruta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 14px;
+    background: rgba(18, 22, 17, 0.93);
+    padding: 20px;
+    border-radius: 16px;
+    margin-bottom: 24px;
+    align-items: end;
+}
+
+.form-ruta .input-group { margin: 0; }
+
+.form-ruta .acciones { display: flex; gap: 10px; }
+
+.form-ruta .btn-login { width: auto; padding: 12px 20px; margin: 0; }
+
+.btn-secundario {
+    background: #444;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 18px;
+    cursor: pointer;
+}
+
+td select {
+    background: #1b2217;
+    color: #fff;
+    border: 1px solid #555;
+    border-radius: 8px;
+    padding: 6px 8px;
+}
+
+/* ===== Parte 3/4: incidencias, informes, estadísticas ===== */
+
+.badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: #111;
+}
+.badge.estado-abierta { background: #ff8a65; }
+.badge.estado-en-curso { background: #ffd54f; }
+.badge.estado-resuelta { background: #81c784; }
+.badge.prioridad-alta { background: #e57373; }
+.badge.prioridad-media { background: #ffd54f; }
+.badge.prioridad-baja { background: #a5d6a7; }
+
+.form-incidencia textarea {
+    width: 100%;
+    min-height: 80px;
+    background: #1b2217;
+    color: #fff;
+    border: 1px solid #555;
+    border-radius: 10px;
+    padding: 10px;
+    font-family: inherit;
+    resize: vertical;
+}
+
+.form-incidencia select,
+.filtros-informe select,
+.filtros-informe input {
+    background: #1b2217;
+    color: #fff;
+    border: 1px solid #555;
+    border-radius: 8px;
+    padding: 8px 10px;
+}
+
+.filtros-informe {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    align-items: end;
+    background: rgba(18, 22, 17, 0.93);
+    padding: 16px 20px;
+    border-radius: 14px;
+    margin-bottom: 16px;
+}
+
+.filtros-informe label { display: block; color: #ddd; font-size: 0.85rem; margin-bottom: 4px; }
+
+.resumen-informe { color: #9acb6c; font-weight: bold; margin: 8px 0 14px; }
+
+.panel-historial {
+    background: rgba(18, 22, 17, 0.93);
+    border-radius: 14px;
+    padding: 18px 22px;
+    margin-top: 20px;
+    color: #ddd;
+}
+.panel-historial h3 { margin-bottom: 10px; }
+.panel-historial li { margin: 6px 0 6px 18px; }
+
+.kpis {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 14px;
+    margin-bottom: 20px;
+}
+.kpi {
+    background: rgba(18, 22, 17, 0.93);
+    border-radius: 14px;
+    padding: 16px;
+    text-align: center;
+    color: #ddd;
+}
+.kpi strong { display: block; font-size: 1.9rem; color: #9acb6c; }
+
+.graficos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 18px;
+}
+.grafico {
+    background: rgba(18, 22, 17, 0.93);
+    border-radius: 14px;
+    padding: 16px;
+}
+.grafico h3 { margin-bottom: 10px; font-size: 1rem; color: #ddd; }
+.grafico .lienzo { position: relative; height: 260px; }
+.grafico .vacio { color: #999; text-align: center; padding-top: 90px; }
+
+@media print {
+    header, footer, .video-fondo, .video-overlay, .filtros-informe, .no-imprimir { display: none !important; }
+    body { background: #fff !important; color: #000 !important; }
+    table, th, td { color: #000 !important; background: #fff !important; border: 1px solid #999 !important; }
+}

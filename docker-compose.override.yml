@@ -1,0 +1,18 @@
+# Se aplica automáticamente con "docker compose up" (desarrollo).
+# En producción se ignora usando:  docker compose -f docker-compose.yml up -d --build
+services:
+  landing:
+    volumes:
+      - ./landing/site:/usr/share/nginx/html:ro
+  frontend:
+    volumes:
+      - ./frontend/site:/usr/share/nginx/html:ro
+  api-usuarios:
+    volumes:
+      - ./api-usuarios:/var/www/html
+  api-gestion:
+    volumes:
+      - ./api-gestion:/var/www/html
+  api-recoleccion:
+    volumes:
+      - ./api-recoleccion:/var/www/html

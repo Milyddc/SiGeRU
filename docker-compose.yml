@@ -1,29 +1,94 @@
+
 services:
 
-  web:
-    build: .
-    container_name: sigeru_web
+  gateway:
+    build: ./gateway
+    container_name: sigeru_gateway
     ports:
       - "8080:80"
-    volumes:
-      - .:/var/www/html
-    environment:
-      DOCKER_ENV: "true"
     depends_on:
-      - db
+      - landing
+      - frontend
+      - api-usuarios
+      - api-gestion
+      - api-recoleccion
+    networks:
+      - publica
+    restart: unless-stopped
+
+  landing:
+    build: ./landing
+    container_name: sigeru_landing
+    networks:
+      - publica
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    container_name: sigeru_frontend
+    networks:
+      - publica
+    restart: unless-stopped
+
+  api-usuarios:
+    build: ./api-usuarios
+    container_name: sigeru_api_usuarios
+    env_file: .env
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - publica
+      - privada
+    restart: unless-stopped
+
+  api-gestion:
+    build: ./api-gestion
+    container_name: sigeru_api_gestion
+    env_file: .env
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - publica
+      - privada
+    restart: unless-stopped
+
+  api-recoleccion:
+    build: ./api-recoleccion
+    container_name: sigeru_api_recoleccion
+    env_file: .env
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - publica
+      - privada
+    restart: unless-stopped
 
   db:
     image: mysql:8.0
     container_name: sigeru_db
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: proyecto
-    ports:
-      - "3307:3306"
+    environment:                       # solo lo que MySQL necesita (no recibe JWT_SECRET ni la clave SMTP)
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - mysql_data:/var/lib/mysql
+      - ./database/database.sql:/docker-entrypoint-initdb.d/database.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -p$$MYSQL_ROOT_PASSWORD"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - privada          # la base solo es alcanzable desde las APIs
+    restart: unless-stopped
+
+networks:
+  publica:
+  privada:
 
 volumes:
   mysql_data:
-

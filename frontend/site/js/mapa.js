@@ -1,0 +1,220 @@
+// Mapa interactivo con Leaflet + OpenStreetMap.
+// Todo el texto que viene de la base se inserta con textContent (nunca innerHTML)
+// para evitar XSS.
+
+// Si la librería del mapa no se pudo descargar (sin internet o bloqueada), se avisa en pantalla
+if (typeof L === "undefined") {
+    document.getElementById("resumen").textContent =
+        "No se pudo cargar la librería del mapa (Leaflet). Revisá tu conexión a internet o si un bloqueador la está bloqueando.";
+    throw new Error("Leaflet no está disponible");
+}
+
+const mapa = L.map("mapa").setView([-34.88, -56.18], 12);
+
+const fondo = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 19,
+    attribution: "&copy; OpenStreetMap",
+    // OpenStreetMap exige saber desde qué sitio se piden sus mapas
+    referrerPolicy: "strict-origin-when-cross-origin"
+}).addTo(mapa);
+
+// Si los mapas de fondo no cargan, los marcadores se ven igual: se avisa del motivo
+fondo.once("tileerror", () => {
+    const aviso = document.getElementById("avisoMapa");
+    if (aviso) aviso.hidden = false;
+    console.warn("No se pudieron cargar los mapas de fondo de OpenStreetMap");
+});
+
+const capas = {
+    contenedores: L.layerGroup().addTo(mapa),
+    incidencias: L.layerGroup().addTo(mapa),
+    centros: L.layerGroup().addTo(mapa),
+    rutas: L.layerGroup().addTo(mapa)
+};
+
+const COLORES_RUTA = ["#2196f3", "#ff9800", "#9c27b0", "#00bcd4", "#e91e63", "#8bc34a"];
+
+let primeraCarga = true;
+
+
+function colorContenedor(estado) {
+
+    const e = (estado || "").toLowerCase();
+
+    if (e === "disponible") return "#4caf50";
+    if (e === "lleno" || e === "desbordado") return "#f44336";
+
+    return "#9e9e9e";
+}
+
+
+function crearPopup(titulo, lineas) {
+
+    const caja = document.createElement("div");
+    caja.className = "popup-mapa";
+
+    const t = document.createElement("strong");
+    t.textContent = titulo;
+    caja.appendChild(t);
+
+    lineas.forEach(texto => {
+        const l = document.createElement("div");
+        l.textContent = texto;
+        caja.appendChild(l);
+    });
+
+    return caja;
+}
+
+
+function iconoEmoji(emoji) {
+    return L.divIcon({
+        className: "icono-mapa",
+        html: emoji,
+        iconSize: [24, 24],
+        iconAnchor: [12, 12]
+    });
+}
+
+
+function dibujar(datos) {
+
+    Object.values(capas).forEach(capa => capa.clearLayers());
+
+    const puntos = [];
+
+    datos.contenedores.forEach(c => {
+
+        const marcador = L.circleMarker([c.latitud, c.longitud], {
+            radius: 9,
+            color: "#111",
+            weight: 2,
+            fillColor: colorContenedor(c.estado),
+            fillOpacity: 0.95
+        });
+
+        marcador.bindPopup(crearPopup(c.codigo, [
+            "Ubicación: " + c.ubicacion,
+            "Estado: " + c.estado,
+            "Tipo: " + (c.tipo_residuo || "Sin especificar"),
+            "Zona: " + (c.zona || "-"),
+            "Ruta: " + (c.ruta || "Sin ruta"),
+            "Incidencias abiertas: " + Number(c.incidencias_abiertas)
+        ]));
+
+        marcador.addTo(capas.contenedores);
+        puntos.push([c.latitud, c.longitud]);
+    });
+
+    datos.incidencias.forEach(i => {
+
+        const marcador = L.marker([i.latitud, i.longitud], {
+            icon: iconoEmoji("⚠️"),
+            zIndexOffset: 1000
+        });
+
+        marcador.bindPopup(crearPopup("Incidencia #" + i.id_incidencia + " - " + i.tipo, [
+            "Contenedor: " + i.contenedor,
+            "Estado: " + i.estado,
+            "Prioridad: " + i.prioridad,
+            "Cuadrilla: " + (i.cuadrilla || "Sin asignar"),
+            "Fecha: " + i.fecha,
+            i.descripcion
+        ]));
+
+        marcador.addTo(capas.incidencias);
+    });
+
+    datos.centros.forEach(c => {
+
+        const marcador = L.marker([c.latitud, c.longitud], { icon: iconoEmoji("🏭") });
+
+        marcador.bindPopup(crearPopup(c.nombre, [
+            "Dirección: " + c.direccion,
+            "Capacidad: " + c.capacidad
+        ]));
+
+        marcador.addTo(capas.centros);
+        puntos.push([c.latitud, c.longitud]);
+    });
+
+    datos.rutas.forEach((r, indice) => {
+
+        if (r.puntos.length < 2) {
+            return;
+        }
+
+        const linea = L.polyline(r.puntos, {
+            color: COLORES_RUTA[indice % COLORES_RUTA.length],
+            weight: 4,
+            opacity: 0.8,
+            dashArray: "8 8"
+        });
+
+        linea.bindPopup(crearPopup(r.nombre, [
+            "Zona: " + r.zona,
+            "Cuadrilla: " + (r.cuadrilla || "Sin asignar"),
+            "Contenedores: " + r.puntos.length
+        ]));
+
+        linea.addTo(capas.rutas);
+    });
+
+    document.getElementById("resumen").textContent =
+        datos.contenedores.length + " contenedores · " +
+        datos.incidencias.length + " incidencias abiertas · " +
+        datos.centros.length + " centros";
+
+    // Solo la primera vez se ajusta el zoom (así el refresco no te mueve el mapa)
+    if (primeraCarga && puntos.length > 0) {
+        mapa.fitBounds(puntos, { padding: [40, 40] });
+        primeraCarga = false;
+    }
+}
+
+
+async function cargarMapa() {
+
+    try {
+
+        const respuesta = await apiFetch("/api/gestion/listarMapa.php");
+
+        if (!respuesta.ok) {
+            throw new Error("Error HTTP " + respuesta.status);
+        }
+
+        dibujar(await respuesta.json());
+
+    } catch (error) {
+
+        console.error(error);
+        document.getElementById("resumen").textContent = "No se pudieron cargar los datos del mapa";
+
+    }
+}
+
+
+// Los checkboxes muestran u ocultan cada capa
+[
+    ["chkContenedores", "contenedores"],
+    ["chkIncidencias", "incidencias"],
+    ["chkCentros", "centros"],
+    ["chkRutas", "rutas"]
+].forEach(([idCheck, nombreCapa]) => {
+
+    document.getElementById(idCheck).addEventListener("change", (e) => {
+
+        if (e.target.checked) {
+            capas[nombreCapa].addTo(mapa);
+        } else {
+            mapa.removeLayer(capas[nombreCapa]);
+        }
+
+    });
+
+});
+
+cargarMapa();
+
+// Actualización automática cada 30 segundos (monitoreo en vivo de incidencias)
+setInterval(cargarMapa, 30000);

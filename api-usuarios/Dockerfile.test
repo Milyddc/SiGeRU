@@ -1,0 +1,19 @@
+# Imagen solo para ejecutar los tests (no se usa en producción)
+FROM php:8.2-cli
+
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends git unzip \
+ && rm -rf /var/lib/apt/lists/* \
+ && docker-php-ext-install mysqli
+
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+WORKDIR /app
+
+COPY composer.json phpunit.xml ./
+RUN composer install --no-interaction --no-progress --prefer-dist
+
+COPY src ./src
+COPY tests ./tests
+
+CMD ["vendor/bin/phpunit", "--testdox"]

@@ -1,0 +1,21 @@
+{
+    "name": "sigeru/api-gestion",
+    "description": "SiGeRU - api-gestion",
+    "type": "project",
+    "require": {
+        "php": ">=8.2",
+        "ext-mysqli": "*",
+        "phpmailer/phpmailer": "^6.9"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.0"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}

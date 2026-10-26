@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa | SiGeRU</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="estilo-extra.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+</head>
+<body>
+
+<video class="video-fondo" autoplay muted loop playsinline>
+    <source src="video/montevideo.mp4" type="video/mp4">
+</video>
+
+<div class="video-overlay"></div>
+
+<header>
+    <div class="logo">
+        <a href="/">
+            <img class="logo-img" src="sigerulogo.png" alt="SiGeRU">
+        </a>
+    </div>
+
+    <nav>
+        <a href="dashboard.html">Panel</a>
+        <a href="usuarios.html">Usuarios</a>
+        <a href="contenedores.html">Contenedores</a>
+        <a href="camiones.html">Camiones</a>
+        <a href="centros.html">Centros</a>
+        <a href="rutas.html">Rutas</a>
+        <a href="recorridos.html">Recorridos</a>
+        <a href="mapa.html">Mapa</a>
+        <a href="incidencias.html">Incidencias</a>
+        <a href="informes.html">Informes</a>
+        <a href="#" onclick="cerrarSesion(); return false;">Salir</a>
+    </nav>
+</header>
+
+<section class="page-container">
+
+    <div class="page-header">
+        <h2>Mapa interactivo</h2>
+    </div>
+
+    <div class="filtros-mapa">
+        <label><input type="checkbox" id="chkContenedores" checked> Contenedores</label>
+        <label><input type="checkbox" id="chkIncidencias" checked> Incidencias abiertas</label>
+        <label><input type="checkbox" id="chkCentros" checked> Centros de acopio</label>
+        <label><input type="checkbox" id="chkRutas" checked> Rutas</label>
+        <span class="resumen" id="resumen">Cargando...</span>
+    </div>
+
+    <p id="avisoMapa" class="resumen-informe" style="color:#ffb74d" hidden>No se pudieron cargar las imágenes del mapa de fondo (OpenStreetMap). Revisá tu conexión a internet; los marcadores se muestran igual.</p>
+
+    <div id="mapa"></div>
+
+    <div class="leyenda">
+        <div><span class="punto" style="background:#4caf50"></span>Contenedor disponible</div>
+        <div><span class="punto" style="background:#f44336"></span>Lleno / desbordado</div>
+        <div><span class="punto" style="background:#9e9e9e"></span>Mantenimiento / fuera de servicio</div>
+        <div>⚠️ Incidencia abierta</div>
+        <div>🏭 Centro de acopio</div>
+    </div>
+
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="js/api.js"></script>
+    <script src="js/notificaciones.js"></script>
+<script src="js/mapa.js"></script>
+
+</body>
+</html>

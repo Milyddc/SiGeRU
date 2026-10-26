@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incidencias | SiGeRU</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="estilo-extra.css">
+</head>
+<body>
+
+<video class="video-fondo" autoplay muted loop playsinline>
+    <source src="video/montevideo.mp4" type="video/mp4">
+</video>
+
+<div class="video-overlay"></div>
+
+<header>
+    <div class="logo">
+        <a href="/">
+            <img class="logo-img" src="sigerulogo.png" alt="SiGeRU">
+        </a>
+    </div>
+
+    <nav>
+        <a href="dashboard.html">Panel</a>
+        <a href="contenedores.html">Contenedores</a>
+        <a href="rutas.html">Rutas</a>
+        <a href="recorridos.html">Recorridos</a>
+        <a href="mapa.html">Mapa</a>
+        <a href="incidencias.html">Incidencias</a>
+        <a href="informes.html">Informes</a>
+        <a href="#" onclick="cerrarSesion(); return false;">Salir</a>
+    </nav>
+</header>
+
+<section class="page-container">
+
+    <div class="page-header">
+        <h2>Incidencias</h2>
+    </div>
+
+    <form id="incidenciaForm" class="form-ruta form-incidencia">
+
+        <div class="input-group">
+            <label for="id_contenedor">Contenedor</label>
+            <select id="id_contenedor" required>
+                <option value="">Seleccione un contenedor</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label for="tipo">Tipo</label>
+            <select id="tipo" required>
+                <option value="Desborde">Desborde</option>
+                <option value="Rotura">Rotura</option>
+                <option value="Falta de recolección">Falta de recolección</option>
+                <option value="Otro">Otro</option>
+            </select>
+        </div>
+
+        <div class="input-group" id="grupoPrioridad">
+            <label for="prioridad">Prioridad</label>
+            <select id="prioridad">
+                <option value="Baja">Baja</option>
+                <option value="Media" selected>Media</option>
+                <option value="Alta">Alta</option>
+            </select>
+        </div>
+
+        <div class="input-group" style="grid-column: 1 / -1;">
+            <label for="descripcion">Descripción</label>
+            <textarea id="descripcion" maxlength="1000" required placeholder="Contá qué pasa con el contenedor"></textarea>
+        </div>
+
+        <div class="acciones">
+            <button type="submit" class="btn-login">Registrar incidencia</button>
+        </div>
+
+    </form>
+
+    <div class="filtros-informe">
+        <div>
+            <label for="fEstado">Estado</label>
+            <select id="fEstado">
+                <option value="">Todas</option>
+                <option value="abiertas">Abiertas (abierta + en curso)</option>
+                <option value="Abierta">Abierta</option>
+                <option value="En curso">En curso</option>
+                <option value="Resuelta">Resuelta</option>
+            </select>
+        </div>
+        <div>
+            <label for="fZona">Zona</label>
+            <select id="fZona">
+                <option value="">Todas</option>
+            </select>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Fecha</th>
+                <th>Contenedor</th>
+                <th>Tipo</th>
+                <th>Prioridad</th>
+                <th>Estado</th>
+                <th>Cuadrilla</th>
+                <th>Reportó</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="tablaIncidencias"></tbody>
+    </table>
+
+    <div class="panel-historial" id="panelHistorial" hidden></div>
+
+</section>
+
+<script src="js/api.js"></script>
+<script src="js/notificaciones.js"></script>
+<script src="js/incidencias.js"></script>
+
+</body>
+</html>
