@@ -6,7 +6,6 @@ use RecoleccionController;
 
 require_once __DIR__ . '/../src/controllers/RecoleccionController.php';
 
-// Rutas de recolección y cuadrillas
 class RecoleccionControllerTest extends TestBase
 {
     private RecoleccionController $c;
@@ -92,7 +91,6 @@ class RecoleccionControllerTest extends TestBase
 
     public function testEliminarRutaLiberaSusContenedores(): void
     {
-        // La ruta 2 no tiene recorridos; su contenedor (CONT-005) debe quedar sin ruta, no borrado
         $r = $this->c->eliminarRuta(2);
 
         $this->assertTrue($r['ok']);
@@ -102,7 +100,6 @@ class RecoleccionControllerTest extends TestBase
 
     public function testNoSePuedeEliminarUnaRutaConRecorridosYNadaSeModifica(): void
     {
-        // La ruta 1 tiene un recorrido en la semilla
         $r = $this->c->eliminarRuta(1);
 
         $this->assertFalse($r['ok']);

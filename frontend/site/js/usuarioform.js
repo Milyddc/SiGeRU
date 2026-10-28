@@ -24,7 +24,6 @@ if (idUsuario) {
     inputPassword.required = true;
 }
 
-
 formulario.addEventListener("submit", async (e) => {
 
     e.preventDefault();

@@ -116,7 +116,6 @@ class RecoleccionController
         return ["ok" => false, "mensaje" => "No se pudo actualizar la ruta"];
     }
 
-    // Asigna (o quita, con null) la cuadrilla responsable de una ruta
     public function asignarCuadrilla($idRuta, $idCuadrilla)
     {
         global $conexion;
@@ -153,7 +152,6 @@ class RecoleccionController
 
         $conexion->begin_transaction();
 
-        // Los contenedores de la ruta quedan sin ruta (no se borran)
         $liberar = $conexion->prepare("UPDATE Contenedor SET id_ruta = NULL WHERE id_ruta = ?");
         $liberar->bind_param("i", $id);
 

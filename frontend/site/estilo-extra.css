@@ -1,5 +1,3 @@
-/* Estilos extra para las pantallas Mapa y Rutas (se suman a style.css) */
-
 .filtros-mapa {
     display: flex;
     flex-wrap: wrap;
@@ -94,8 +92,6 @@ td select {
     border-radius: 8px;
     padding: 6px 8px;
 }
-
-/* ===== Parte 3/4: incidencias, informes, estadísticas ===== */
 
 .badge {
     display: inline-block;

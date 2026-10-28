@@ -1,12 +1,9 @@
-# Normaliza los finales de línea: en el repositorio siempre LF, así no hay avisos entre Windows y Linux
 * text=auto
 
-# Estos archivos se ejecutan o se leen dentro de contenedores Linux: siempre LF
 *.sh   text eol=lf
 *.conf text eol=lf
 *.sql  text eol=lf
 Dockerfile* text eol=lf
 
-# Archivos binarios
 *.png binary
 *.mp4 binary

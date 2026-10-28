@@ -8,7 +8,6 @@ use MapaController;
 require_once __DIR__ . '/../src/controllers/EstadisticaController.php';
 require_once __DIR__ . '/../src/controllers/MapaController.php';
 
-// Panel de control (estadísticas) y mapa interactivo
 class EstadisticaYMapaTest extends TestBase
 {
     private function porClave(array $filas, string $clave, string $valor): array
@@ -21,8 +20,6 @@ class EstadisticaYMapaTest extends TestBase
 
         return $r;
     }
-
-    // ------------------------------------------------------------ Estadísticas
 
     public function testElResumenTieneTodasLasSecciones(): void
     {
@@ -46,7 +43,6 @@ class EstadisticaYMapaTest extends TestBase
 
     public function testTiempoPromedioDeResolucion(): void
     {
-        // Resueltas en la semilla: 4,5 h y 5,75 h -> promedio 5,125 h
         $r = (new EstadisticaController())->resumen();
 
         $this->assertEqualsWithDelta(5.1, $r['tiempo_promedio_horas'], 0.1);
@@ -69,7 +65,6 @@ class EstadisticaYMapaTest extends TestBase
 
     public function testTopDeContenedoresDesbordadosDelMes(): void
     {
-        // Tres desbordes nuevos (fecha de hoy) en CONT-003 y uno en CONT-004
         for ($i = 0; $i < 3; $i++) {
             $this->consulta("INSERT INTO Incidencia (tipo, descripcion, id_usuario, id_contenedor) VALUES ('Desborde', 't', 1, 3)");
         }
@@ -88,7 +83,6 @@ class EstadisticaYMapaTest extends TestBase
             (new EstadisticaController())->resumen()['volumen_simulado'], 'zona', 'volumen'
         );
 
-        // Zona Centro: 1100 + 1100 + 2400 + 1100 = 5700 -> 75% = 4275
         $this->assertEquals(4275, $volumen['Centro']);
     }
 
@@ -101,8 +95,6 @@ class EstadisticaYMapaTest extends TestBase
         $this->assertEquals(4, $estados['Disponible']);
         $this->assertEquals(1, $estados['Lleno']);
     }
-
-    // ------------------------------------------------------------ Mapa
 
     public function testElMapaDevuelveSusCuatroCapas(): void
     {

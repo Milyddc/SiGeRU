@@ -32,10 +32,10 @@ CREATE TABLE Usuario (
     telefono VARCHAR(20),
     email VARCHAR(100) NOT NULL UNIQUE,
     estado ENUM('Pendiente','Activo','Inactivo') NOT NULL DEFAULT 'Pendiente',
-    password VARCHAR(255) NOT NULL,              -- hash bcrypt/argon2, nunca texto plano
+    password VARCHAR(255) NOT NULL,
     id_rol INT NOT NULL,
     id_centro_acopio INT NULL,
-    intentos_fallidos INT NOT NULL DEFAULT 0,    -- política: bloqueo por intentos fallidos
+    intentos_fallidos INT NOT NULL DEFAULT 0,
     bloqueado_hasta DATETIME NULL,
     fecha_registro DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -64,9 +64,9 @@ CREATE TABLE Contenedor (
     id_contenedor INT AUTO_INCREMENT PRIMARY KEY,
     codigo VARCHAR(100) NOT NULL UNIQUE,
     ubicacion VARCHAR(150) NOT NULL,
-    latitud DECIMAL(10,7) NULL,                  -- para el mapa interactivo
+    latitud DECIMAL(10,7) NULL,
     longitud DECIMAL(10,7) NULL,
-    zona VARCHAR(100) NULL,                      -- para estadísticas por zona
+    zona VARCHAR(100) NULL,
     estado VARCHAR(50) NOT NULL,
     capacidad DECIMAL(10,2) NOT NULL,
     id_tipo_residuo INT NOT NULL,
@@ -95,7 +95,7 @@ CREATE TABLE Incidencia (
     descripcion TEXT NOT NULL,
     estado ENUM('Abierta','En curso','Resuelta') NOT NULL DEFAULT 'Abierta',
     prioridad ENUM('Baja','Media','Alta') NOT NULL DEFAULT 'Media',
-    fecha_resolucion DATETIME NULL,              -- para calcular tiempos de resolución
+    fecha_resolucion DATETIME NULL,
     id_usuario INT NOT NULL,
     id_contenedor INT NOT NULL,
     id_cuadrilla INT NULL,
@@ -121,9 +121,9 @@ CREATE TABLE Historial_Incidencia (
 
 CREATE TABLE Notificacion (
     id_notificacion INT AUTO_INCREMENT PRIMARY KEY,
-    id_usuario INT NULL,                         -- destinatario puntual
-    id_rol INT NULL,                             -- o todos los de un rol
-    id_cuadrilla INT NULL,                       -- o toda una cuadrilla
+    id_usuario INT NULL,
+    id_rol INT NULL,
+    id_cuadrilla INT NULL,
     mensaje VARCHAR(255) NOT NULL,
     tipo ENUM('info','alerta') NOT NULL DEFAULT 'info',
     leida TINYINT(1) NOT NULL DEFAULT 0,
@@ -133,7 +133,6 @@ CREATE TABLE Notificacion (
     FOREIGN KEY (id_cuadrilla) REFERENCES Cuadrilla(id_cuadrilla),
     INDEX idx_notif_leida (leida)
 );
-
 
 CREATE TABLE Mantenimiento_Camion (
     id_mantenimiento INT AUTO_INCREMENT PRIMARY KEY,
@@ -151,7 +150,7 @@ CREATE TABLE Recorrido (
     id_recorrido INT AUTO_INCREMENT PRIMARY KEY,
     id_ruta INT NOT NULL,
     id_camion INT NOT NULL,
-    id_usuario INT NOT NULL,                     -- quien inició el recorrido
+    id_usuario INT NOT NULL,
     fecha_inicio DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     fecha_fin DATETIME NULL,
     estado ENUM('En curso','Finalizado') NOT NULL DEFAULT 'En curso',
@@ -171,8 +170,6 @@ CREATE TABLE Recorrido_Recurso (
     unidad VARCHAR(20) NULL,
     FOREIGN KEY (id_recorrido) REFERENCES Recorrido(id_recorrido) ON DELETE CASCADE
 );
-
--- =========================== DATOS DE PRUEBA ===========================
 
 INSERT INTO Rol (nombre) VALUES ('Administrador'), ('Cuadrilla'), ('Operario'), ('Vecino');
 
@@ -205,7 +202,6 @@ INSERT INTO Contenedor (codigo, ubicacion, latitud, longitud, zona, estado, capa
 ('CONT-005', 'Av. Luis Batlle Berres 2200', -34.8650000, -56.2400000, 'Oeste', 'En mantenimiento', 2400.00, 5, 2, 2),
 ('CONT-006', 'Camino Maldonado 3200', -34.8400000, -56.1100000, 'Norte', 'Disponible', 1100.00, 6, 3, 3);
 
--- Contraseña de TODOS los usuarios de prueba: Sigeru2026!   (guardada como hash bcrypt)
 INSERT INTO Usuario (nombre_completo, telefono, email, estado, password, id_rol, id_centro_acopio) VALUES
 ('Emily Ferreira', '099123456', 'emily@sigeru.com', 'Activo', '$2y$10$aTqkm8ZcTl.cVoVx6LLbOOBTgKK4wKoCywHpUPdXhk.f.Q7b/.81W', 1, 1),
 ('Santiago Valenzuela', '099234567', 'santiago@sigeru.com', 'Activo', '$2y$10$aTqkm8ZcTl.cVoVx6LLbOOBTgKK4wKoCywHpUPdXhk.f.Q7b/.81W', 3, 2),

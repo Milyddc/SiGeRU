@@ -1,7 +1,3 @@
-// Campanita de notificaciones en el menú. Se actualiza cada 20 segundos y muestra
-// un aviso emergente cuando llega una alerta nueva. Todo el texto se inserta con
-// textContent (sin innerHTML) para evitar XSS.
-
 (function () {
 
     const nav = document.querySelector("header nav");
@@ -54,11 +50,16 @@
 
     envoltorio.appendChild(boton);
     envoltorio.appendChild(panel);
-    nav.appendChild(envoltorio);
+    const destino = document.getElementById("menuAcciones");
+
+    if (destino) {
+        destino.prepend(envoltorio);
+    } else {
+        nav.appendChild(envoltorio);
+    }
 
     let ultimoIdVisto = Number(sessionStorage.getItem("notif_ultimo_id") || 0);
     let primeraVez = sessionStorage.getItem("notif_ultimo_id") === null;
-
 
     async function marcar(id) {
 
@@ -71,7 +72,6 @@
         cargar();
     }
 
-
     function mostrarToast(texto) {
 
         const toast = document.createElement("div");
@@ -82,7 +82,6 @@
 
         setTimeout(() => toast.remove(), 6000);
     }
-
 
     function dibujar(datos) {
 
@@ -125,7 +124,6 @@
             panel.appendChild(item);
         });
 
-        // Aviso emergente de alertas nuevas (no se muestra en la primera carga de la sesión)
         const maxId = datos.notificaciones.reduce((m, n) => Math.max(m, n.id_notificacion), 0);
 
         if (!primeraVez) {
@@ -139,7 +137,6 @@
         ultimoIdVisto = Math.max(ultimoIdVisto, maxId);
         sessionStorage.setItem("notif_ultimo_id", String(ultimoIdVisto));
     }
-
 
     async function cargar() {
 
@@ -155,7 +152,6 @@
             console.error("Notificaciones:", error);
         }
     }
-
 
     boton.addEventListener("click", (e) => {
         e.stopPropagation();

@@ -6,9 +6,8 @@ require_once __DIR__ . "/NotificacionController.php";
 
 class UsuarioController
 {
-    // ---- Políticas de usuario (documentar en Ciberseguridad) ----
     const PASSWORD_MIN = 8;
-    const MAX_INTENTOS = 5;          // intentos fallidos antes de bloquear
+    const MAX_INTENTOS = 5;
     const MINUTOS_BLOQUEO = 15;
     const ROL_VECINO = 4;
 
@@ -32,7 +31,6 @@ class UsuarioController
     {
         global $conexion;
 
-        // Nunca se devuelve la columna password
         $resultado = $conexion->query(
             "SELECT id_usuario, nombre_completo, telefono, email, estado,
                     id_rol, id_centro_acopio, fecha_registro
@@ -49,8 +47,6 @@ class UsuarioController
         return $usuarios;
     }
 
-    // $esAdmin = true  -> un administrador crea el usuario (rol libre, queda Activo)
-    // $esAdmin = false -> registro público (siempre Vecino y Pendiente de aprobación)
     public function registrar($datos, bool $esAdmin = false)
     {
         global $conexion;
@@ -192,7 +188,6 @@ class UsuarioController
         return ["ok" => false, "mensaje" => "No se encontró el usuario o ya estaba activo"];
     }
 
-    // Aviso (interno + email) a los administradores cuando alguien se registra desde la landing
     private function avisarNuevoRegistro(string $nombre, string $correo): void
     {
         try {
@@ -208,7 +203,6 @@ class UsuarioController
         }
     }
 
-    // Email al usuario cuando su cuenta es aprobada
     private function avisarAprobacion(int $id): void
     {
         global $conexion;
@@ -257,7 +251,7 @@ class UsuarioController
         $usuario = $stmt->get_result()->fetch_assoc();
 
         if (!$usuario) {
-            return $generico; // no revela si el correo existe
+            return $generico;
         }
 
         if ($usuario["bloqueado_hasta"] && strtotime($usuario["bloqueado_hasta"]) > time()) {
@@ -300,14 +294,12 @@ class UsuarioController
             ];
         }
 
-        // Login correcto: se reinician los intentos
         $reset = $conexion->prepare(
             "UPDATE Usuario SET intentos_fallidos = 0, bloqueado_hasta = NULL WHERE id_usuario = ?"
         );
         $reset->bind_param("i", $usuario["id_usuario"]);
         $reset->execute();
 
-        // Re-hash automático si el algoritmo/costo cambió
         if (password_needs_rehash($usuario["password"], PASSWORD_BCRYPT, ["cost" => 12])) {
             $nuevoHash = $this->hashPassword($password);
             $rh = $conexion->prepare("UPDATE Usuario SET password = ? WHERE id_usuario = ?");

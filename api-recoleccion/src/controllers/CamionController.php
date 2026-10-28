@@ -163,8 +163,6 @@ class CamionController
         return ["ok" => false, "mensaje" => "No se pudo eliminar el camión"];
     }
 
-    // ---------------- Mantenimiento ----------------
-
     public function listarMantenimientos(?int $idCamion): array
     {
         global $conexion;
@@ -224,7 +222,6 @@ class CamionController
             return ["ok" => false, "mensaje" => "No se pudo programar el mantenimiento"];
         }
 
-        // Si el mantenimiento es para hoy o ya venció, el camión queda fuera de servicio operativo
         $upd = $conexion->prepare(
             "UPDATE Camion SET estado = 'En mantenimiento'
              WHERE id_camion = ? AND estado = 'Disponible' AND ? <= CURDATE()"
@@ -272,7 +269,6 @@ class CamionController
             return ["ok" => false, "mensaje" => "No se pudo completar el mantenimiento"];
         }
 
-        // Si no quedan mantenimientos vencidos pendientes, el camión vuelve a estar disponible
         $pend = $conexion->prepare(
             "SELECT COUNT(*) AS n FROM Mantenimiento_Camion
              WHERE id_camion = ? AND estado = 'Programado' AND fecha_programada <= CURDATE()"

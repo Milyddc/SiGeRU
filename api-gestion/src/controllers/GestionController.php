@@ -10,7 +10,7 @@ class GestionController
         global $conexion;
 
         $resultado = $conexion->query(
-            "SELECT c.*, 
+            "SELECT c.*,
                     t.nombre AS tipo_residuo,
                     r.nombre AS ruta,
                     ca.nombre AS centro_acopio
@@ -31,7 +31,6 @@ class GestionController
 
         return $contenedores;
     }
-
 
     private function datosContenedor($datos)
     {
@@ -64,7 +63,6 @@ class GestionController
             "zona" => $zona
         ];
     }
-
 
     public function crearContenedor($datos)
     {
@@ -105,7 +103,6 @@ class GestionController
         error_log("crearContenedor execute: " . $stmt->error);
         return ["ok" => false, "mensaje" => "No se pudo registrar el contenedor"];
     }
-
 
     public function actualizarContenedor($datos)
     {
@@ -149,7 +146,6 @@ class GestionController
         error_log("actualizarContenedor execute: " . $stmt->error);
         return ["ok" => false, "mensaje" => "No se pudo actualizar el contenedor"];
     }
-
 
     public function eliminarContenedor($id)
     {
@@ -196,7 +192,6 @@ class GestionController
         ];
     }
 
-
     public function listarCentros()
     {
         global $conexion;
@@ -213,7 +208,6 @@ class GestionController
 
         return $centros;
     }
-
 
     public function crearCentro($datos)
     {
@@ -255,7 +249,6 @@ class GestionController
             "mensaje" => "No se pudo registrar el centro",
         ];
     }
-
 
     public function actualizarCentro($datos)
     {
@@ -301,7 +294,6 @@ class GestionController
             "mensaje" => "No se pudo actualizar el centro",
         ];
     }
-
 
     public function eliminarCentro($id)
     {

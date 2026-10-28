@@ -82,7 +82,6 @@ async function cargarCentros() {
     }
 }
 
-
 function editarCentro(id, nombre, direccion, capacidad) {
 
     const parametros = new URLSearchParams({
@@ -95,7 +94,6 @@ function editarCentro(id, nombre, direccion, capacidad) {
     window.location.href =
         "centroform.html?" + parametros.toString();
 }
-
 
 async function eliminarCentro(id) {
 
@@ -179,7 +177,6 @@ async function eliminarCentro(id) {
     }
 }
 
-
 const formulario = document.getElementById("centroForm");
 
 if (formulario) {
@@ -204,7 +201,6 @@ if (formulario) {
         document.getElementById("capacidad").value =
             parametros.get("capacidad") || "";
     }
-
 
     formulario.addEventListener("submit", async (e) => {
 
@@ -273,6 +269,5 @@ if (formulario) {
         }
     });
 }
-
 
 cargarCentros();

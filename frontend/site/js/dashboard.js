@@ -7,7 +7,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
-
 async function cargarUsuarios() {
 
     const elemento = document.getElementById("cantidadUsuarios");
@@ -41,7 +40,6 @@ async function cargarUsuarios() {
     }
 
 }
-
 
 async function cargarContenedores() {
 
@@ -77,7 +75,6 @@ async function cargarContenedores() {
 
 }
 
-
 async function cargarCamiones() {
 
     const elemento = document.getElementById("cantidadCamiones");
@@ -111,7 +108,6 @@ async function cargarCamiones() {
     }
 
 }
-
 
 async function cargarCentros() {
 

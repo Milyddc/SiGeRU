@@ -12,8 +12,6 @@ if (!is_array($datos)) {
     exit;
 }
 
-// Si quien llama es un administrador autenticado, puede elegir el rol.
-// Si no, el registro es público: siempre Vecino y pendiente de aprobación.
 $actual = usuarioActual();
 $esAdmin = $actual && $actual["rol"] === "Administrador";
 

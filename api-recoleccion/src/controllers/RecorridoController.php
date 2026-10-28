@@ -2,8 +2,6 @@
 
 require_once __DIR__ . "/../database.php";
 
-// Recorridos de recolección: un camión sale a hacer una ruta, se registran los
-// recursos que se usan (combustible, bolsas, etc.) y al final el volumen recolectado.
 class RecorridoController
 {
     private function cuadrillasDe(int $idUsuario): array
@@ -24,7 +22,6 @@ class RecorridoController
         return $ids;
     }
 
-    // Una cuadrilla solo opera sobre rutas de su cuadrilla; administración y operarios, sobre todas
     private function puedeOperarRuta(array $usuario, ?int $idCuadrillaRuta): bool
     {
         if ($usuario["rol"] !== "Cuadrilla") {

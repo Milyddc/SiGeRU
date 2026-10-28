@@ -7,7 +7,6 @@ const formulario = document.getElementById("rutaForm");
 const tabla = document.getElementById("tablaRutas");
 const selectCuadrilla = document.getElementById("id_cuadrilla");
 
-
 async function llamar(archivo, datos) {
 
     const respuesta = await apiFetch(BASE_REC + archivo, {
@@ -18,7 +17,6 @@ async function llamar(archivo, datos) {
 
     return respuesta.json();
 }
-
 
 function opcionesCuadrilla(select, seleccionada) {
 
@@ -39,7 +37,6 @@ function opcionesCuadrilla(select, seleccionada) {
     select.value = seleccionada ? String(seleccionada) : "";
 }
 
-
 async function cargarCuadrillas() {
 
     const respuesta = await apiFetch(BASE_REC + "listarCuadrillas.php");
@@ -48,7 +45,6 @@ async function cargarCuadrillas() {
 
     opcionesCuadrilla(selectCuadrilla, null);
 }
-
 
 async function cargarRutas() {
 
@@ -84,7 +80,6 @@ async function cargarRutas() {
             fila.children[1].textContent = ruta.zona;
             fila.children[2].textContent = ruta.frecuencia || "-";
 
-            // Cambio rápido de cuadrilla desde la tabla
             const select = document.createElement("select");
             opcionesCuadrilla(select, ruta.id_cuadrilla);
             select.addEventListener("change", () => asignarCuadrilla(ruta.id_ruta, select.value));
@@ -123,7 +118,6 @@ async function cargarRutas() {
     }
 }
 
-
 async function asignarCuadrilla(idRuta, idCuadrilla) {
 
     const resultado = await llamar("asignarCuadrilla.php", {
@@ -137,7 +131,6 @@ async function asignarCuadrilla(idRuta, idCuadrilla) {
 
     cargarRutas();
 }
-
 
 function editarRuta(ruta) {
 
@@ -154,7 +147,6 @@ function editarRuta(ruta) {
     window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-
 function limpiarFormulario() {
 
     rutaEditando = null;
@@ -163,7 +155,6 @@ function limpiarFormulario() {
     document.getElementById("btnGuardar").textContent = "Guardar ruta";
     document.getElementById("btnCancelar").hidden = true;
 }
-
 
 async function eliminarRuta(id) {
 
@@ -179,7 +170,6 @@ async function eliminarRuta(id) {
         cargarRutas();
     }
 }
-
 
 formulario.addEventListener("submit", async (e) => {
 

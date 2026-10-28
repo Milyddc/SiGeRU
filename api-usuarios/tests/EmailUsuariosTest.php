@@ -7,7 +7,6 @@ use UsuarioController;
 
 require_once __DIR__ . '/../src/controllers/UsuarioController.php';
 
-// Emails del flujo de registro y aprobación (sin enviar nada real)
 class EmailUsuariosTest extends TestBase
 {
     private array $enviados = [];

@@ -14,7 +14,6 @@ let cuadrillas = [];
 const tabla = document.getElementById("tablaIncidencias");
 const panelHistorial = document.getElementById("panelHistorial");
 
-
 async function postJson(url, datos) {
 
     const respuesta = await apiFetch(url, {
@@ -26,11 +25,9 @@ async function postJson(url, datos) {
     return respuesta.json();
 }
 
-
 function clase(prefijo, valor) {
     return prefijo + "-" + String(valor).toLowerCase().replace(/\s+/g, "-");
 }
-
 
 function badge(prefijo, valor) {
     const s = document.createElement("span");
@@ -38,7 +35,6 @@ function badge(prefijo, valor) {
     s.textContent = valor;
     return s;
 }
-
 
 async function cargarContenedores() {
 
@@ -68,7 +64,6 @@ async function cargarContenedores() {
     });
 }
 
-
 async function cargarCuadrillas() {
 
     if (!puedeAsignar) return;
@@ -76,7 +71,6 @@ async function cargarCuadrillas() {
     const respuesta = await apiFetch(BASE_RECOLECCION + "listarCuadrillas.php");
     cuadrillas = await respuesta.json();
 }
-
 
 function selectEstado(inc) {
 
@@ -108,7 +102,6 @@ function selectEstado(inc) {
 
     return select;
 }
-
 
 function selectCuadrilla(inc) {
 
@@ -145,7 +138,6 @@ function selectCuadrilla(inc) {
     return select;
 }
 
-
 async function verHistorial(id) {
 
     const respuesta = await apiFetch(BASE_GESTION + "historialIncidencia.php?id_incidencia=" + id);
@@ -180,7 +172,6 @@ async function verHistorial(id) {
     panelHistorial.appendChild(lista);
     panelHistorial.scrollIntoView({ behavior: "smooth" });
 }
-
 
 async function cargarIncidencias() {
 
@@ -246,7 +237,6 @@ async function cargarIncidencias() {
     }
 }
 
-
 document.getElementById("incidenciaForm").addEventListener("submit", async (e) => {
 
     e.preventDefault();
@@ -269,7 +259,6 @@ document.getElementById("incidenciaForm").addEventListener("submit", async (e) =
 document.getElementById("fEstado").addEventListener("change", cargarIncidencias);
 document.getElementById("fZona").addEventListener("change", cargarIncidencias);
 
-// Un vecino no elige la prioridad
 if (rolSesion === "Vecino") {
     document.getElementById("grupoPrioridad").hidden = true;
 }

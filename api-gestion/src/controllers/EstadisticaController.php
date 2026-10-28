@@ -36,7 +36,6 @@ class EstadisticaController
             "por_estado" => $this->filas(
                 "SELECT estado, COUNT(*) AS cantidad FROM Incidencia GROUP BY estado"
             ),
-            // Top de contenedores con más desbordes en el mes actual
             "top_desbordados" => $this->filas(
                 "SELECT c.codigo, c.ubicacion, COUNT(*) AS cantidad
                  FROM Incidencia i
@@ -46,7 +45,6 @@ class EstadisticaController
                  ORDER BY cantidad DESC, c.codigo
                  LIMIT 5"
             ),
-            // Zonas críticas = zonas con más incidencias
             "por_zona" => $this->filas(
                 "SELECT COALESCE(c.zona, 'Sin zona') AS zona, COUNT(*) AS cantidad
                  FROM Incidencia i
@@ -64,7 +62,6 @@ class EstadisticaController
             "contenedores_por_estado" => $this->filas(
                 "SELECT estado, COUNT(*) AS cantidad FROM Contenedor GROUP BY estado"
             ),
-            // Datos SIMULADOS: se asume un 75% de llenado sobre la capacidad instalada
             "volumen_simulado" => $this->filas(
                 "SELECT COALESCE(zona, 'Sin zona') AS zona, ROUND(SUM(capacidad) * 0.75, 0) AS volumen
                  FROM Contenedor

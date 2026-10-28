@@ -99,7 +99,6 @@ async function cargarUsuarios() {
 
 }
 
-
 function editarUsuario(usuario) {
 
     const partes = (usuario.nombre_completo || "").trim().split(" ");
@@ -116,7 +115,6 @@ function editarUsuario(usuario) {
 
     window.location.href = "usuarioform.html?" + parametros.toString();
 }
-
 
 async function eliminarUsuario(id) {
 
@@ -165,9 +163,7 @@ async function eliminarUsuario(id) {
 
 }
 
-
 cargarUsuarios();
-
 
 async function aprobarUsuario(id) {
 

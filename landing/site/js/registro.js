@@ -4,8 +4,6 @@ formulario.addEventListener("submit", async (e) => {
 
     e.preventDefault();
 
-    // El rol ya no se elige: el registro público siempre crea un Vecino
-    // pendiente de aprobación por un administrador.
     const datos = {
         nombre: document.getElementById("nombre").value,
         apellido: document.getElementById("apellido").value,

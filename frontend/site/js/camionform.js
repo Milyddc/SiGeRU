@@ -20,7 +20,6 @@ if (idCamion) {
     }
 }
 
-
 formulario.addEventListener("submit", async (e) => {
 
     e.preventDefault();
@@ -97,7 +96,6 @@ formulario.addEventListener("submit", async (e) => {
     }
 
 });
-
 
 async function cargarCuadrillas() {
 

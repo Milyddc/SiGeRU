@@ -3,7 +3,6 @@ const formulario = document.getElementById("contenedorForm");
 const parametros = new URLSearchParams(window.location.search);
 const idContenedor = parametros.get("id_contenedor");
 
-
 async function cargarCentrosEnSelect() {
 
     const select = document.getElementById("id_centro_acopio");
@@ -38,7 +37,6 @@ async function cargarCentrosEnSelect() {
         select.value = idCentroActual;
     }
 }
-
 
 async function cargarRutasEnSelect() {
 
@@ -75,7 +73,6 @@ async function cargarRutasEnSelect() {
     }
 }
 
-
 if (idContenedor) {
 
     document.getElementById("tituloFormulario").textContent = "Modificar Contenedor";
@@ -101,7 +98,6 @@ if (idContenedor) {
 
 cargarCentrosEnSelect();
 cargarRutasEnSelect();
-
 
 formulario.addEventListener("submit", async (e) => {
 

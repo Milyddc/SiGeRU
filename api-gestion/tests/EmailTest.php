@@ -8,7 +8,6 @@ use NotificacionController;
 
 require_once __DIR__ . '/../src/controllers/IncidenciaController.php';
 
-// Envío de emails por las notificaciones. Se usa un "enviador de prueba": no se manda ningún email real.
 class EmailTest extends TestBase
 {
     private array $enviados = [];
@@ -37,8 +36,6 @@ class EmailTest extends TestBase
 
         return $emails;
     }
-
-    // ------------------------------------------------------------ Notificaciones
 
     public function testUnaAlertaSeEnviaPorEmail(): void
     {
@@ -109,8 +106,6 @@ class EmailTest extends TestBase
         $this->assertSame(1, (int)$this->valor('SELECT COUNT(*) FROM Notificacion WHERE id_usuario = 1'));
     }
 
-    // ------------------------------------------------------------ Mailer
-
     public function testSinDestinatariosValidosNoSeEnvia(): void
     {
         $this->assertFalse(Mailer::enviar(['no-es-un-email', ''], 'Asunto', 'Cuerpo'));
@@ -139,8 +134,6 @@ class EmailTest extends TestBase
         $this->assertFalse(Mailer::enviar(['a@test.com'], 'Asunto', 'Cuerpo'));
         $this->assertStringContainsString('deshabilitado', Mailer::ultimoError());
     }
-
-    // ------------------------------------------------------------ Incidencias
 
     private function nueva(array $usuario, array $cambios = []): array
     {

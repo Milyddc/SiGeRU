@@ -6,7 +6,6 @@ use CamionController;
 
 require_once __DIR__ . '/../src/controllers/CamionController.php';
 
-// Flota de camiones y mantenimiento preventivo/correctivo
 class CamionControllerTest extends TestBase
 {
     private CamionController $c;
@@ -32,8 +31,6 @@ class CamionControllerTest extends TestBase
     {
         return date('Y-m-d', strtotime('-1 day'));
     }
-
-    // ------------------------------------------------------------ CRUD
 
     public function testListarCamionesIncluyeLaCuadrilla(): void
     {
@@ -109,7 +106,6 @@ class CamionControllerTest extends TestBase
 
     public function testNoSePuedeEliminarUnCamionConRecorridos(): void
     {
-        // El camión 1 hizo el recorrido de la semilla
         $r = $this->c->eliminar(1);
 
         $this->assertFalse($r['ok']);
@@ -120,8 +116,6 @@ class CamionControllerTest extends TestBase
     {
         $this->assertFalse($this->c->eliminar(9999)['ok']);
     }
-
-    // ------------------------------------------------------------ Mantenimiento
 
     public function testListarMantenimientos(): void
     {
@@ -167,7 +161,6 @@ class CamionControllerTest extends TestBase
 
     public function testCompletarMantenimientoDejaElCamionDisponible(): void
     {
-        // Mantenimiento 1 de la semilla: correctivo vencido del camión 3 (que está en mantenimiento)
         $r = $this->c->completarMantenimiento(1);
 
         $this->assertTrue($r['ok']);

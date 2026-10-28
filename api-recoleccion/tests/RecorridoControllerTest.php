@@ -6,7 +6,6 @@ use RecorridoController;
 
 require_once __DIR__ . '/../src/controllers/RecorridoController.php';
 
-// Recorridos de recolección: inicio, recursos utilizados y cierre
 class RecorridoControllerTest extends TestBase
 {
     private RecorridoController $c;
@@ -21,8 +20,6 @@ class RecorridoControllerTest extends TestBase
     {
         return $this->c->iniciar($usuario, $ruta, $camion);
     }
-
-    // ------------------------------------------------------------ Iniciar
 
     public function testIniciarRecorridoMarcaElCamionEnRuta(): void
     {
@@ -39,7 +36,6 @@ class RecorridoControllerTest extends TestBase
 
     public function testNoSePuedeUsarUnCamionQueNoEstaDisponible(): void
     {
-        // El camión 3 está en mantenimiento
         $r = $this->iniciar($this->admin(), 3, 3);
 
         $this->assertFalse($r['ok']);
@@ -71,21 +67,17 @@ class RecorridoControllerTest extends TestBase
 
     public function testUnaCuadrillaPuedeIniciarLaRutaDeSuCuadrilla(): void
     {
-        // Lautaro (Cuadrilla 1) y la ruta 1 (Cuadrilla 1)
         $this->assertTrue($this->iniciar($this->cuadrilla1(), 1, 1)['ok']);
     }
 
     public function testUnaCuadrillaNoPuedeIniciarLaRutaDeOtra(): void
     {
-        // La ruta 2 pertenece a la Cuadrilla 2
         $r = $this->iniciar($this->cuadrilla1(), 2, 2);
 
         $this->assertFalse($r['ok']);
         $this->assertStringContainsString('no pertenece', $r['mensaje']);
         $this->assertSame('Disponible', $this->valor('SELECT estado FROM Camion WHERE id_camion = 2'));
     }
-
-    // ------------------------------------------------------------ Recursos
 
     public function testRegistrarRecursoUtilizado(): void
     {
@@ -115,7 +107,6 @@ class RecorridoControllerTest extends TestBase
 
     public function testNoSePuedenAgregarRecursosAUnRecorridoFinalizado(): void
     {
-        // El recorrido 1 de la semilla ya está finalizado
         $r = $this->c->registrarRecurso($this->admin(), ['id_recorrido' => 1, 'recurso' => 'Bolsas', 'cantidad' => 10]);
 
         $this->assertFalse($r['ok']);
@@ -135,8 +126,6 @@ class RecorridoControllerTest extends TestBase
     {
         $this->assertFalse($this->c->registrarRecurso($this->admin(), ['id_recorrido' => 9999, 'recurso' => 'X', 'cantidad' => 1])['ok']);
     }
-
-    // ------------------------------------------------------------ Finalizar
 
     public function testFinalizarRecorridoLiberaElCamionYGuardaElVolumen(): void
     {
@@ -188,8 +177,6 @@ class RecorridoControllerTest extends TestBase
         $this->assertFalse($this->c->finalizar($this->cuadrilla1(), ['id_recorrido' => $id])['ok']);
     }
 
-    // ------------------------------------------------------------ Listar
-
     public function testListarRecorridosIncluyeSusRecursos(): void
     {
         $lista = $this->c->listar($this->admin());
@@ -203,7 +190,6 @@ class RecorridoControllerTest extends TestBase
     {
         $this->assertCount(1, $this->c->listar($this->cuadrilla1()));
 
-        // El usuario 5 pertenece a la Cuadrilla 3, que no hizo ningún recorrido
         $this->assertSame([], $this->c->listar($this->cuadrilla3()));
     }
 }

@@ -87,7 +87,6 @@ async function cargarContenedores() {
 
 }
 
-
 function editarContenedor(contenedor) {
 
     const parametros = new URLSearchParams({
@@ -106,7 +105,6 @@ function editarContenedor(contenedor) {
 
     window.location.href = "contenedorform.html?" + parametros.toString();
 }
-
 
 async function eliminarContenedor(id) {
 
@@ -154,6 +152,5 @@ async function eliminarContenedor(id) {
     }
 
 }
-
 
 cargarContenedores();

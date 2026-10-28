@@ -6,7 +6,6 @@ use IncidenciaController;
 
 require_once __DIR__ . '/../src/controllers/IncidenciaController.php';
 
-// Registro y seguimiento de incidencias
 class IncidenciaControllerTest extends TestBase
 {
     private IncidenciaController $c;
@@ -26,8 +25,6 @@ class IncidenciaControllerTest extends TestBase
             'prioridad' => 'Alta'
         ], $cambios));
     }
-
-    // ------------------------------------------------------------ Crear
 
     public function testCrearIncidenciaComoVecinoUsaElUsuarioDelTokenYPrioridadMedia(): void
     {
@@ -83,7 +80,6 @@ class IncidenciaControllerTest extends TestBase
     {
         $this->nueva($this->vecino(), ['tipo' => 'Desborde']);
 
-        // Administradores (1 y 6) y operarios (2 y 4); el vecino que reporta no recibe aviso
         foreach ([1, 6, 2, 4] as $idUsuario) {
             $n = $this->fila(
                 "SELECT tipo FROM Notificacion WHERE id_usuario = ? AND mensaje LIKE 'Nueva incidencia%'",
@@ -125,8 +121,6 @@ class IncidenciaControllerTest extends TestBase
         $this->assertStringContainsString('no existe', $r['mensaje']);
     }
 
-    // ------------------------------------------------------------ Cambiar estado
-
     public function testResolverRegistraFechaHistorialYLiberaElContenedor(): void
     {
         $id = (int)$this->nueva($this->operario(), ['id_contenedor' => 2, 'tipo' => 'Desborde'])['id_incidencia'];
@@ -153,7 +147,6 @@ class IncidenciaControllerTest extends TestBase
 
     public function testReabrirUnaIncidenciaLimpiaLaFechaDeResolucion(): void
     {
-        // La incidencia 3 de la semilla está resuelta
         $r = $this->c->cambiarEstado($this->admin(), 3, 'Abierta', 'Volvió a desbordar');
 
         $this->assertTrue($r['ok']);
@@ -176,7 +169,6 @@ class IncidenciaControllerTest extends TestBase
 
     public function testCambiarAlMismoEstadoEsRechazado(): void
     {
-        // La incidencia 1 de la semilla está Abierta
         $this->assertFalse($this->c->cambiarEstado($this->admin(), 1, 'Abierta', null)['ok']);
     }
 
@@ -192,24 +184,19 @@ class IncidenciaControllerTest extends TestBase
 
     public function testCuadrillaPuedeCambiarEstadoDeIncidenciasDeSuCuadrilla(): void
     {
-        // Incidencia 1: asignada a la Cuadrilla 1 (Lautaro pertenece a ella)
         $this->assertTrue($this->c->cambiarEstado($this->cuadrilla1(), 1, 'En curso', null)['ok']);
     }
 
     public function testCuadrillaNoPuedeCambiarEstadoDeOtraCuadrilla(): void
     {
-        // Incidencia 2: asignada a la Cuadrilla 2
         $r = $this->c->cambiarEstado($this->cuadrilla1(), 2, 'Resuelta', null);
 
         $this->assertFalse($r['ok']);
         $this->assertSame('En curso', $this->valor('SELECT estado FROM Incidencia WHERE id_incidencia = 2'));
     }
 
-    // ------------------------------------------------------------ Asignar cuadrilla
-
     public function testAsignarCuadrillaPasaLaIncidenciaAEnCurso(): void
     {
-        // Incidencia 5: abierta y sin cuadrilla
         $r = $this->c->asignarCuadrilla($this->admin(), 5, 2);
 
         $this->assertTrue($r['ok']);
@@ -224,7 +211,6 @@ class IncidenciaControllerTest extends TestBase
     {
         $this->c->asignarCuadrilla($this->admin(), 5, 2);
 
-        // La Cuadrilla 2 está integrada por los usuarios 2 y 4
         foreach ([2, 4] as $idUsuario) {
             $this->assertSame(1, (int)$this->valor(
                 "SELECT COUNT(*) FROM Notificacion WHERE id_usuario = ? AND mensaje LIKE '%asignada a tu cuadrilla%'",
@@ -237,8 +223,6 @@ class IncidenciaControllerTest extends TestBase
     {
         $this->assertFalse($this->c->asignarCuadrilla($this->admin(), 5, 99)['ok']);
     }
-
-    // ------------------------------------------------------------ Listar y filtros
 
     public function testAdministradorVeTodasLasIncidencias(): void
     {
@@ -292,8 +276,6 @@ class IncidenciaControllerTest extends TestBase
         $this->assertCount(2, $this->c->listar($this->admin(), ['id_contenedor' => 1]));
     }
 
-    // ------------------------------------------------------------ Historial
-
     public function testHistorialDeUnaIncidencia(): void
     {
         $r = $this->c->historial($this->admin(), 2);
@@ -305,7 +287,6 @@ class IncidenciaControllerTest extends TestBase
 
     public function testVecinoNoPuedeVerElHistorialDeOtraPersona(): void
     {
-        // La incidencia 1 la reportó el usuario 3
         $this->assertFalse($this->c->historial($this->vecino(), 1)['ok']);
     }
 }

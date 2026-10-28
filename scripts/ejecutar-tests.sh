@@ -1,5 +1,4 @@
 #!/bin/sh
-# Ejecuta los tests de las tres APIs. Uso: ./scripts/ejecutar-tests.sh [usuarios|gestion|recoleccion]
 cd "$(dirname "$0")/.." || exit 1
 
 COMPOSE="docker compose -f docker-compose.test.yml"

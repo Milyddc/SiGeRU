@@ -6,7 +6,6 @@ use PHPUnit\Framework\TestCase;
 
 require_once __DIR__ . '/../src/config/auth.php';
 
-// Firma digital de los tokens (JWT HS256): creación, verificación y ataques comunes
 class AuthTest extends TestCase
 {
     public function testCrearYVerificarToken(): void
@@ -31,7 +30,6 @@ class AuthTest extends TestCase
     {
         $partes = explode('.', jwtCrear(['sub' => 7, 'rol' => 'Vecino']));
 
-        // El atacante cambia su rol a Administrador pero no puede recalcular la firma
         $partes[1] = b64urlEncode(json_encode(['sub' => 7, 'rol' => 'Administrador', 'exp' => time() + 1000]));
 
         $this->assertNull(jwtVerificar(implode('.', $partes)));

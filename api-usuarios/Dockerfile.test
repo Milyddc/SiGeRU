@@ -1,4 +1,3 @@
-# Imagen solo para ejecutar los tests (no se usa en producción)
 FROM php:8.2-cli
 
 RUN apt-get update \

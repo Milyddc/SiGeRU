@@ -1,6 +1,5 @@
 <?php
 
-// Credenciales desde variables de entorno (.env). Nunca hardcodeadas.
 $host        = getenv("DB_HOST") ?: "127.0.0.1";
 $usuario     = getenv("MYSQL_USER") ?: "root";
 $password    = getenv("MYSQL_PASSWORD") !== false ? getenv("MYSQL_PASSWORD") : "";

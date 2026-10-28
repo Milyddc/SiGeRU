@@ -6,7 +6,6 @@ use GestionController;
 
 require_once __DIR__ . '/../src/controllers/GestionController.php';
 
-// CRUD de contenedores y centros de acopio
 class GestionControllerTest extends TestBase
 {
     private GestionController $c;
@@ -32,8 +31,6 @@ class GestionControllerTest extends TestBase
             'zona' => 'Centro'
         ], $cambios);
     }
-
-    // ------------------------------------------------------------ Contenedores
 
     public function testListarContenedoresIncluyeDatosRelacionados(): void
     {
@@ -160,8 +157,6 @@ class GestionControllerTest extends TestBase
         $this->assertFalse($r['ok']);
         $this->assertStringContainsString('No se encontró', $r['mensaje']);
     }
-
-    // ------------------------------------------------------------ Centros de acopio
 
     public function testListarCentros(): void
     {

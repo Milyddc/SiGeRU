@@ -1,6 +1,3 @@
-// Utilidades compartidas: sesión (JWT) y llamadas autenticadas a las APIs.
-// Incluir ANTES de los demás scripts en cada página.
-
 const PAGINAS_PUBLICAS = ["", "login.html"];
 
 function guardarSesion(token, usuario) {
@@ -25,8 +22,6 @@ function cerrarSesion() {
     window.location.href = "login.html";
 }
 
-// Igual que fetch(), pero agrega el token. Si el servidor responde 401 (sesión
-// vencida o inválida) manda al usuario al login.
 async function apiFetch(url, opciones = {}) {
 
     const headers = Object.assign({}, opciones.headers || {});
@@ -40,13 +35,13 @@ async function apiFetch(url, opciones = {}) {
 
     if (respuesta.status === 401) {
         sessionStorage.clear();
+        sessionStorage.setItem("aviso", "Tu sesión venció o no es válida. Volvé a iniciar sesión.");
         window.location.href = "login.html";
     }
 
     return respuesta;
 }
 
-// Protección de páginas: sin token no se entra a las pantallas internas.
 (function () {
     const pagina = window.location.pathname.split("/").pop();
 

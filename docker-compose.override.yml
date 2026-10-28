@@ -1,5 +1,3 @@
-# Se aplica automáticamente con "docker compose up" (desarrollo).
-# En producción se ignora usando:  docker compose -f docker-compose.yml up -d --build
 services:
   landing:
     volumes:

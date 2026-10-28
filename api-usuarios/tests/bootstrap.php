@@ -2,7 +2,6 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-// Los tests BORRAN y recrean las tablas: solo corren contra una base cuyo nombre contenga "test".
 $nombreBd = getenv('MYSQL_DATABASE') ?: 'proyecto_test';
 
 if (strpos($nombreBd, 'test') === false) {
@@ -10,7 +9,6 @@ if (strpos($nombreBd, 'test') === false) {
     exit(1);
 }
 
-// Crear la base de pruebas si todavía no existe
 $admin = new mysqli(
     getenv('DB_HOST') ?: 'db-test',
     getenv('MYSQL_USER') ?: 'root',
@@ -19,10 +17,8 @@ $admin = new mysqli(
 $admin->query("CREATE DATABASE IF NOT EXISTS `$nombreBd` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
 $admin->close();
 
-// Conexión global ($conexion) que usan los controladores
 require_once __DIR__ . '/../src/database.php';
 
-// Deja la base exactamente como el script database.sql (esquema + datos de prueba)
 function reiniciarBaseDeDatos(): void
 {
     global $conexion;
@@ -36,7 +32,6 @@ function reiniciarBaseDeDatos(): void
             throw new RuntimeException("No se pudo leer $ruta");
         }
 
-        // Se quita el CREATE DATABASE / USE del script: la base de tests ya está seleccionada
         $sql = preg_replace('/^\s*CREATE DATABASE[^;]*;\s*USE\s+\w+;/i', '', $contenido, 1);
     }
 

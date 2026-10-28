@@ -1,8 +1,5 @@
 <?php
 
-// Autenticación con JWT firmado (HS256). Sin librerías externas.
-// La firma digital del token impide que el cliente modifique su rol o id.
-
 function b64urlEncode(string $datos): string
 {
     return rtrim(strtr(base64_encode($datos), "+/", "-_"), "=");
@@ -52,7 +49,7 @@ function jwtVerificar(string $token): ?array
 
     $cabecera = json_decode(b64urlDecode($parte1), true);
     if (!is_array($cabecera) || ($cabecera["alg"] ?? "") !== "HS256") {
-        return null; // rechaza "alg: none" y otros algoritmos
+        return null;
     }
 
     $firmaEsperada = b64urlEncode(
@@ -93,7 +90,6 @@ function tokenDeLaPeticion(): ?string
     return null;
 }
 
-// Devuelve el usuario autenticado o null (sin cortar la ejecución)
 function usuarioActual(): ?array
 {
     $token = tokenDeLaPeticion();
@@ -101,9 +97,6 @@ function usuarioActual(): ?array
     return $token ? jwtVerificar($token) : null;
 }
 
-// Corta con 401/403 si no hay sesión válida o el rol no está permitido.
-// Uso: $usuario = requireAuth();                      (cualquier usuario logueado)
-//      $usuario = requireAuth(["Administrador"]);     (solo ciertos roles)
 function requireAuth(array $rolesPermitidos = []): array
 {
     $usuario = usuarioActual();

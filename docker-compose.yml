@@ -1,9 +1,7 @@
-
 services:
 
   gateway:
     build: ./gateway
-    container_name: sigeru_gateway
     ports:
       - "8080:80"
     depends_on:
@@ -18,21 +16,18 @@ services:
 
   landing:
     build: ./landing
-    container_name: sigeru_landing
     networks:
       - publica
     restart: unless-stopped
 
   frontend:
     build: ./frontend
-    container_name: sigeru_frontend
     networks:
       - publica
     restart: unless-stopped
 
   api-usuarios:
     build: ./api-usuarios
-    container_name: sigeru_api_usuarios
     env_file: .env
     depends_on:
       db:
@@ -44,7 +39,6 @@ services:
 
   api-gestion:
     build: ./api-gestion
-    container_name: sigeru_api_gestion
     env_file: .env
     depends_on:
       db:
@@ -56,7 +50,6 @@ services:
 
   api-recoleccion:
     build: ./api-recoleccion
-    container_name: sigeru_api_recoleccion
     env_file: .env
     depends_on:
       db:
@@ -68,8 +61,7 @@ services:
 
   db:
     image: mysql:8.0
-    container_name: sigeru_db
-    environment:                       # solo lo que MySQL necesita (no recibe JWT_SECRET ni la clave SMTP)
+    environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
@@ -83,7 +75,7 @@ services:
       timeout: 5s
       retries: 10
     networks:
-      - privada          # la base solo es alcanzable desde las APIs
+      - privada
     restart: unless-stopped
 
 networks:

@@ -1,24 +1,25 @@
-// Mapa interactivo con Leaflet + OpenStreetMap.
-// Todo el texto que viene de la base se inserta con textContent (nunca innerHTML)
-// para evitar XSS.
-
-// Si la librería del mapa no se pudo descargar (sin internet o bloqueada), se avisa en pantalla
 if (typeof L === "undefined") {
     document.getElementById("resumen").textContent =
         "No se pudo cargar la librería del mapa (Leaflet). Revisá tu conexión a internet o si un bloqueador la está bloqueando.";
     throw new Error("Leaflet no está disponible");
 }
 
-const mapa = L.map("mapa").setView([-34.88, -56.18], 12);
+const LIMITES_MONTEVIDEO = L.latLngBounds([-34.99, -56.46], [-34.70, -55.99]);
+
+const mapa = L.map("mapa", {
+    maxBounds: LIMITES_MONTEVIDEO,
+    maxBoundsViscosity: 1.0,
+    minZoom: 11,
+    maxZoom: 18
+}).setView([-34.88, -56.18], 12);
 
 const fondo = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 19,
+    maxZoom: 18,
+    bounds: LIMITES_MONTEVIDEO,
     attribution: "&copy; OpenStreetMap",
-    // OpenStreetMap exige saber desde qué sitio se piden sus mapas
     referrerPolicy: "strict-origin-when-cross-origin"
 }).addTo(mapa);
 
-// Si los mapas de fondo no cargan, los marcadores se ven igual: se avisa del motivo
 fondo.once("tileerror", () => {
     const aviso = document.getElementById("avisoMapa");
     if (aviso) aviso.hidden = false;
@@ -36,7 +37,6 @@ const COLORES_RUTA = ["#2196f3", "#ff9800", "#9c27b0", "#00bcd4", "#e91e63", "#8
 
 let primeraCarga = true;
 
-
 function colorContenedor(estado) {
 
     const e = (estado || "").toLowerCase();
@@ -46,7 +46,6 @@ function colorContenedor(estado) {
 
     return "#9e9e9e";
 }
-
 
 function crearPopup(titulo, lineas) {
 
@@ -66,7 +65,6 @@ function crearPopup(titulo, lineas) {
     return caja;
 }
 
-
 function iconoEmoji(emoji) {
     return L.divIcon({
         className: "icono-mapa",
@@ -75,7 +73,6 @@ function iconoEmoji(emoji) {
         iconAnchor: [12, 12]
     });
 }
-
 
 function dibujar(datos) {
 
@@ -165,13 +162,11 @@ function dibujar(datos) {
         datos.incidencias.length + " incidencias abiertas · " +
         datos.centros.length + " centros";
 
-    // Solo la primera vez se ajusta el zoom (así el refresco no te mueve el mapa)
     if (primeraCarga && puntos.length > 0) {
-        mapa.fitBounds(puntos, { padding: [40, 40] });
+        mapa.fitBounds(puntos, { padding: [40, 40], maxZoom: 16 });
         primeraCarga = false;
     }
 }
-
 
 async function cargarMapa() {
 
@@ -193,8 +188,6 @@ async function cargarMapa() {
     }
 }
 
-
-// Los checkboxes muestran u ocultan cada capa
 [
     ["chkContenedores", "contenedores"],
     ["chkIncidencias", "incidencias"],
@@ -216,5 +209,4 @@ async function cargarMapa() {
 
 cargarMapa();
 
-// Actualización automática cada 30 segundos (monitoreo en vivo de incidencias)
 setInterval(cargarMapa, 30000);

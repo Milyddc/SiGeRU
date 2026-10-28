@@ -19,7 +19,6 @@ class IncidenciaController
          JOIN Usuario u ON u.id_usuario = i.id_usuario
          LEFT JOIN Cuadrilla cu ON cu.id_cuadrilla = i.id_cuadrilla";
 
-    // Condición SQL que limita lo que cada rol puede ver
     private function alcance(array $usuario): array
     {
         $id = (int)$usuario["sub"];
@@ -163,9 +162,8 @@ class IncidenciaController
         $idContenedor = (int)$datos["id_contenedor"];
         $tipo = $datos["tipo"] ?? "Otro";
         $descripcion = trim($datos["descripcion"] ?? "");
-        $idUsuario = (int)$usuario["sub"]; // siempre el usuario autenticado, nunca el que manda el cliente
+        $idUsuario = (int)$usuario["sub"];
 
-        // Un vecino no define la prioridad
         $prioridad = $usuario["rol"] === "Vecino" ? "Media" : ($datos["prioridad"] ?? "Media");
 
         if (!in_array($tipo, self::TIPOS, true)) {
@@ -207,7 +205,6 @@ class IncidenciaController
 
         $this->registrarHistorial($idIncidencia, $idUsuario, null, "Abierta", "Incidencia creada");
 
-        // Un desborde marca el contenedor como lleno
         if ($tipo === "Desborde") {
             $upd = $conexion->prepare(
                 "UPDATE Contenedor SET estado = 'Lleno' WHERE id_contenedor = ? AND estado = 'Disponible'"
@@ -218,7 +215,6 @@ class IncidenciaController
 
         $conexion->commit();
 
-        // Alertas para quienes gestionan
         $esAlerta = ($tipo === "Desborde" || $prioridad === "Alta");
         $mensaje = "Nueva incidencia #" . $idIncidencia . " (" . $tipo . ") en " . $contenedor["codigo"]
             . " - prioridad " . $prioridad;
@@ -228,8 +224,6 @@ class IncidenciaController
             NotificacionController::idsPorRol("Operario")
         );
 
-        // Para no llenar la bandeja de emails: un desborde repetido en el mismo contenedor
-        // (mientras el anterior siga abierto) genera aviso interno pero no un nuevo email.
         $dup = $conexion->prepare(
             "SELECT COUNT(*) AS n FROM Incidencia
              WHERE id_contenedor = ? AND tipo = ? AND estado <> 'Resuelta' AND id_incidencia <> ?"
@@ -288,7 +282,6 @@ class IncidenciaController
 
         $this->registrarHistorial($idIncidencia, $idUsuario, $inc["estado"], $estado, $comentario);
 
-        // Al resolver el último desborde abierto, el contenedor vuelve a estar disponible
         if ($estado === "Resuelta" && $inc["tipo"] === "Desborde") {
             $otras = $conexion->prepare(
                 "SELECT COUNT(*) AS n FROM Incidencia
@@ -313,7 +306,7 @@ class IncidenciaController
             "Tu incidencia #" . $idIncidencia . " en " . $inc["contenedor"] . " pasó a: " . $estado,
             "info",
             $idUsuario,
-            $estado === "Resuelta"   // por email solo cuando se resuelve
+            $estado === "Resuelta"
         );
 
         return ["ok" => true, "mensaje" => "Estado actualizado a " . $estado];
@@ -338,7 +331,6 @@ class IncidenciaController
             return ["ok" => false, "mensaje" => "La cuadrilla indicada no existe"];
         }
 
-        // Al asignar una cuadrilla, una incidencia abierta pasa a "En curso"
         $nuevoEstado = $inc["estado"] === "Abierta" ? "En curso" : $inc["estado"];
 
         $conexion->begin_transaction();
@@ -367,7 +359,7 @@ class IncidenciaController
                 . " (" . $inc["tipo"] . ")",
             $inc["prioridad"] === "Alta" ? "alerta" : "info",
             (int)$usuario["sub"],
-            true                     // las asignaciones siempre se avisan por email
+            true
         );
 
         return ["ok" => true, "mensaje" => "Cuadrilla asignada correctamente"];

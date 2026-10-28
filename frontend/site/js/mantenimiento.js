@@ -2,7 +2,6 @@ const BASE = "/api/recoleccion/";
 
 const tabla = document.getElementById("tablaMantenimientos");
 
-
 async function postJson(archivo, datos) {
 
     const respuesta = await apiFetch(BASE + archivo, {
@@ -13,7 +12,6 @@ async function postJson(archivo, datos) {
 
     return respuesta.json();
 }
-
 
 async function cargarCamiones() {
 
@@ -29,7 +27,6 @@ async function cargarCamiones() {
         select.appendChild(op);
     });
 }
-
 
 async function cargarMantenimientos() {
 
@@ -93,7 +90,6 @@ async function cargarMantenimientos() {
         celda.textContent = "No se pudieron cargar los mantenimientos.";
     }
 }
-
 
 document.getElementById("mantenimientoForm").addEventListener("submit", async (e) => {
 

@@ -60,7 +60,6 @@ class MapaController
              WHERE latitud IS NOT NULL AND longitud IS NOT NULL"
         )));
 
-        // Rutas: línea que une, en orden, los contenedores que pertenecen a cada ruta
         $rutas = $this->filas($conexion->query(
             "SELECT r.id_ruta, r.nombre, r.zona, cu.nombre AS cuadrilla
              FROM Ruta r

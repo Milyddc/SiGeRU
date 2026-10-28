@@ -10,7 +10,6 @@ let seleccionado = null;
 const tabla = document.getElementById("tablaRecorridos");
 const panel = document.getElementById("panelRecorrido");
 
-
 async function postJson(archivo, datos) {
 
     const respuesta = await apiFetch(BASE + archivo, {
@@ -22,14 +21,12 @@ async function postJson(archivo, datos) {
     return respuesta.json();
 }
 
-
 function opcion(select, valor, texto) {
     const op = document.createElement("option");
     op.value = valor;
     op.textContent = texto;
     select.appendChild(op);
 }
-
 
 async function cargarSelects() {
 
@@ -54,11 +51,9 @@ async function cargarSelects() {
         .forEach(c => opcion(selCamion, c.id_camion, c.matricula + " - " + (c.modelo || "")));
 }
 
-
 function celdaTexto(fila, texto) {
     fila.insertCell().textContent = texto;
 }
-
 
 async function cargarRecorridos() {
 
@@ -119,7 +114,6 @@ async function cargarRecorridos() {
     }
 }
 
-
 function campo(etiqueta, tipo, id, extra) {
 
     const grupo = document.createElement("div");
@@ -139,7 +133,6 @@ function campo(etiqueta, tipo, id, extra) {
 
     return grupo;
 }
-
 
 function dibujarPanel() {
 
@@ -186,7 +179,6 @@ function dibujarPanel() {
         return;
     }
 
-    // --- agregar recurso ---
     const formRecurso = document.createElement("form");
     formRecurso.className = "form-ruta";
     formRecurso.appendChild(campo("Recurso", "text", "nuevoRecurso", { required: true, maxLength: 100, placeholder: "Combustible" }));
@@ -216,7 +208,6 @@ function dibujarPanel() {
 
     panel.appendChild(formRecurso);
 
-    // --- finalizar ---
     const formFin = document.createElement("form");
     formFin.className = "form-ruta";
     formFin.appendChild(campo("Volumen recolectado (kg)", "number", "volumenFinal", { step: "any", min: "0" }));
@@ -251,7 +242,6 @@ function dibujarPanel() {
 
     panel.appendChild(formFin);
 }
-
 
 document.getElementById("recorridoForm").addEventListener("submit", async (e) => {
 

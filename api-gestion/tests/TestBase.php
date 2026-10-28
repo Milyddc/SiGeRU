@@ -4,8 +4,6 @@ namespace Tests;
 
 use PHPUnit\Framework\TestCase;
 
-// Base de todos los tests: deja la base de datos en su estado inicial antes de cada test
-// y ofrece usuarios de ejemplo y atajos para consultar la base.
 abstract class TestBase extends TestCase
 {
     protected function setUp(): void
@@ -13,7 +11,6 @@ abstract class TestBase extends TestCase
         reiniciarBaseDeDatos();
     }
 
-    // Usuarios de la semilla (database.sql), con la forma que entregan los tokens JWT
     protected function admin(): array
     {
         return ['sub' => 6, 'rol' => 'Administrador', 'nombre' => 'Administrador Prueba'];
@@ -24,13 +21,11 @@ abstract class TestBase extends TestCase
         return ['sub' => 2, 'rol' => 'Operario', 'nombre' => 'Santiago Valenzuela'];
     }
 
-    // Lautaro: pertenece a la Cuadrilla 1
     protected function cuadrilla1(): array
     {
         return ['sub' => 3, 'rol' => 'Cuadrilla', 'nombre' => 'Lautaro Ibáñez'];
     }
 
-    // Usuario 5: pertenece a la Cuadrilla 3
     protected function cuadrilla3(): array
     {
         return ['sub' => 5, 'rol' => 'Cuadrilla', 'nombre' => 'Usuario Cuadrilla'];

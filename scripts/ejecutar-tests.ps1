@@ -1,5 +1,3 @@
-# Ejecuta los tests de las tres APIs (Windows / PowerShell).
-# Uso:  .\scripts\ejecutar-tests.ps1   o   .\scripts\ejecutar-tests.ps1 gestion
 param([string]$Servicio = "")
 
 Set-Location (Join-Path $PSScriptRoot "..")

@@ -27,8 +27,6 @@ class UsuarioControllerTest extends TestBase
         ], $cambios);
     }
 
-    // ------------------------------------------------------------ Registro
-
     public function testRegistroPublicoCreaVecinoPendiente(): void
     {
         $r = $this->c->registrar($this->datosRegistro(), false);
@@ -109,8 +107,6 @@ class UsuarioControllerTest extends TestBase
         $this->assertFalse($r['ok']);
     }
 
-    // ------------------------------------------------------------ Listado
-
     public function testListarUsuariosNoExponeContrasenas(): void
     {
         $usuarios = $this->c->listarUsuarios();
@@ -122,8 +118,6 @@ class UsuarioControllerTest extends TestBase
             $this->assertArrayHasKey('email', $u);
         }
     }
-
-    // ------------------------------------------------------------ Login
 
     public function testLoginCorrectoDevuelveTokenYUsuario(): void
     {
@@ -202,7 +196,6 @@ class UsuarioControllerTest extends TestBase
             $this->c->login(['correo' => 'vecino@sigeru.com', 'password' => 'mala-' . $i]);
         }
 
-        // Aun con la contraseña correcta, la cuenta queda bloqueada
         $r = $this->c->login(['correo' => 'vecino@sigeru.com', 'password' => 'Sigeru2026!']);
 
         $this->assertFalse($r['ok']);
@@ -221,8 +214,6 @@ class UsuarioControllerTest extends TestBase
         $this->assertTrue($r['ok']);
         $this->assertSame(0, (int)$this->valor('SELECT intentos_fallidos FROM Usuario WHERE id_usuario = 7'));
     }
-
-    // ------------------------------------------------------------ Actualizar
 
     public function testActualizarCambiaLosDatosYHasheaLaContrasena(): void
     {
@@ -272,8 +263,6 @@ class UsuarioControllerTest extends TestBase
         $this->assertFalse($r['ok']);
         $this->assertStringContainsString('ya está registrado', $r['mensaje']);
     }
-
-    // ------------------------------------------------------------ Eliminar
 
     public function testEliminarUsuarioSinRelaciones(): void
     {

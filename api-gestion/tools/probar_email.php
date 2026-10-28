@@ -1,8 +1,5 @@
 <?php
 
-// Prueba de envío de email desde la línea de comandos (muestra el motivo si falla).
-// Uso:  docker compose exec api-gestion php tools/probar_email.php destino@correo.com
-
 require_once __DIR__ . '/../src/Mailer.php';
 
 $destino = $argv[1] ?? null;

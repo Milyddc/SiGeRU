@@ -90,7 +90,6 @@ async function cargarCamiones() {
 
 }
 
-
 function editarCamion(camion) {
 
     const parametros = new URLSearchParams({
@@ -104,7 +103,6 @@ function editarCamion(camion) {
 
     window.location.href = "camionform.html?" + parametros.toString();
 }
-
 
 async function eliminarCamion(id) {
 

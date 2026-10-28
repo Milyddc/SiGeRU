@@ -4,7 +4,6 @@ let datosActuales = [];
 
 const tabla = document.getElementById("tablaInforme");
 
-
 async function cargarZonas() {
 
     const respuesta = await apiFetch(BASE_GESTION + "listarContenedores.php");
@@ -20,7 +19,6 @@ async function cargarZonas() {
         select.appendChild(op);
     });
 }
-
 
 async function generar() {
 
@@ -75,8 +73,6 @@ async function generar() {
     }
 }
 
-
-// Evita "inyección de fórmulas" al abrir el CSV en Excel
 function celdaCsv(valor) {
 
     let texto = String(valor ?? "");
@@ -87,7 +83,6 @@ function celdaCsv(valor) {
 
     return '"' + texto.replace(/"/g, '""') + '"';
 }
-
 
 function exportarCsv() {
 
@@ -109,7 +104,6 @@ function exportarCsv() {
         lineas.push(columnas.map(c => celdaCsv(i[c[0]])).join(";"));
     });
 
-    // \uFEFF = BOM para que Excel respete los acentos
     const blob = new Blob(["\uFEFF" + lineas.join("\r\n")], { type: "text/csv;charset=utf-8" });
     const url = URL.createObjectURL(blob);
 
@@ -122,7 +116,6 @@ function exportarCsv() {
 
     URL.revokeObjectURL(url);
 }
-
 
 document.getElementById("btnGenerar").addEventListener("click", generar);
 document.getElementById("btnCsv").addEventListener("click", exportarCsv);

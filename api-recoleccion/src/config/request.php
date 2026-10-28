@@ -1,7 +1,5 @@
 <?php
 
-// Lee el JSON del cuerpo de la petición y valida campos obligatorios.
-// Corta con 400 si algo falta. Devuelve el array de datos.
 function leerJson(array $requeridos = []): array
 {
     $datos = json_decode(file_get_contents("php://input"), true);

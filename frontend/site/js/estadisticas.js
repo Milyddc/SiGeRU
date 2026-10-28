@@ -1,5 +1,3 @@
-// Panel de control: KPIs y gráficos (Chart.js) a partir de estadisticas.php
-
 (async function () {
 
     const seccion = document.getElementById("seccionEstadisticas");
@@ -14,7 +12,6 @@
 
         const respuesta = await apiFetch("/api/gestion/estadisticas.php");
 
-        // Solo Administrador y Operario ven las estadísticas
         if (respuesta.status === 403) {
             seccion.hidden = true;
             return;

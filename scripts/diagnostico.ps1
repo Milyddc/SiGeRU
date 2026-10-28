@@ -1,8 +1,3 @@
-# Diagnóstico de SiGeRU: junta el estado de Docker, pruebas del login y los logs en "diagnostico.txt".
-# Ejecutalo desde la carpeta del proyecto (donde está docker-compose.yml), en PowerShell:
-#     powershell -ExecutionPolicy Bypass -File .\scripts\diagnostico.ps1
-# No muestra contraseñas ni el token de sesión.
-
 Set-Location (Join-Path $PSScriptRoot "..")
 $salida = Join-Path (Get-Location).Path "diagnostico.txt"
 "Diagnóstico SiGeRU - $(Get-Date)" | Out-File $salida -Encoding utf8

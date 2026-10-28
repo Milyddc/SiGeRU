@@ -5,9 +5,6 @@ require_once __DIR__ . "/../Mailer.php";
 
 class NotificacionController
 {
-    // Crea una notificación individual por cada destinatario (así cada uno
-    // marca como leída la suya sin afectar a los demás).
-    // $email: true fuerza el envío por email, false lo evita; null = solo si es una alerta.
     public static function crear(array $idsUsuario, string $mensaje, string $tipo = "info", ?int $excluir = null, ?bool $email = null): void
     {
         global $conexion;
@@ -43,7 +40,6 @@ class NotificacionController
         }
     }
 
-    // Envía el mismo aviso por email. Si algo falla, la notificación interna ya quedó guardada.
     private static function enviarEmail(array $ids, string $mensaje, string $tipo): void
     {
         global $conexion;
@@ -153,7 +149,6 @@ class NotificacionController
         return ["notificaciones" => $items, "no_leidas" => $noLeidas];
     }
 
-    // $id = null marca todas las del usuario como leídas
     public function marcarLeida(int $idUsuario, ?int $id): array
     {
         global $conexion;

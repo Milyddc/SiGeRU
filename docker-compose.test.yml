@@ -1,7 +1,3 @@
-# Tests unitarios (PHPUnit) de las tres APIs, contra una base MySQL descartable.
-# No toca la base de datos del sistema. Uso:  ./scripts/ejecutar-tests.sh   (o .ps1 en Windows)
-#
-# Cada API usa su propia base (proyecto_test_usuarios, ...) para poder correr en paralelo.
 services:
 
   db-test:
@@ -9,7 +5,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: test
     tmpfs:
-      - /var/lib/mysql          # en memoria: se borra al terminar
+      - /var/lib/mysql
     healthcheck:
       test: ["CMD-SHELL", "mysqladmin ping -h localhost -ptest"]
       interval: 5s
