@@ -1,4 +1,4 @@
-Set-Location (Join-Path $PSScriptRoot "..")
+﻿Set-Location (Join-Path $PSScriptRoot "..")
 $salida = Join-Path (Get-Location).Path "diagnostico.txt"
 "Diagnóstico SiGeRU - $(Get-Date)" | Out-File $salida -Encoding utf8
 

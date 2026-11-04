@@ -1,4 +1,4 @@
-Set-Location (Join-Path $PSScriptRoot "..")
+﻿Set-Location (Join-Path $PSScriptRoot "..")
 
 Write-Host "1/4  Deteniendo y borrando contenedores y datos de este proyecto..."
 docker compose down -v --remove-orphans

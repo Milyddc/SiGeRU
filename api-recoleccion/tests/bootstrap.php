@@ -18,6 +18,7 @@ $admin->query("CREATE DATABASE IF NOT EXISTS `$nombreBd` CHARACTER SET utf8mb4 C
 $admin->close();
 
 require_once __DIR__ . '/../src/database.php';
+$GLOBALS['conexion'] = $conexion;
 
 function reiniciarBaseDeDatos(): void
 {
