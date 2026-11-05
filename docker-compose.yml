@@ -1,9 +1,11 @@
 services:
-
   gateway:
-    build: ./gateway
+    build:
+      context: .
+      dockerfile: gateway/Dockerfile
     ports:
       - "8080:80"
+      - "8443:443"
     depends_on:
       - landing
       - frontend
