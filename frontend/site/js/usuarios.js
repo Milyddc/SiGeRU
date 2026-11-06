@@ -48,7 +48,7 @@ async function cargarUsuarios() {
                 <td></td>
                 <td>
                     <button type="button" class="btn-editar">Editar</button>
-                    <button type="button" class="btn-eliminar">Eliminar</button>
+                    <button type="button" class="btn-eliminar">Dar de baja</button>
                 </td>
             `;
 

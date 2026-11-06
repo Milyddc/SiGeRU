@@ -9,6 +9,7 @@ mysqli_report(MYSQLI_REPORT_OFF);
 
 $conexion = @new mysqli($host, $usuario, $password, $baseDeDatos);
 
+
 if ($conexion->connect_error) {
     error_log("Error de conexión a la BD: " . $conexion->connect_error);
     http_response_code(500);

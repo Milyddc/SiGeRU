@@ -326,33 +326,69 @@ class UsuarioController
         ];
     }
 
-    public function eliminar($id)
-    {
-        global $conexion;
+    
+ public function eliminar($id)
+{
+    global $conexion;
 
-        $stmt = $conexion->prepare("DELETE FROM Usuario WHERE id_usuario = ?");
+    try {
+        $conexion->begin_transaction();
+
+        // Eliminar solamente las relaciones del usuario con las cuadrillas.
+        $stmt = $conexion->prepare(
+            "DELETE FROM Cuadrilla_Usuario WHERE id_usuario = ?"
+        );
 
         if (!$stmt) {
-            error_log("eliminar prepare: " . $conexion->error);
-            return ["ok" => false, "mensaje" => "No se pudo eliminar el usuario"];
+            throw new Exception($conexion->error);
         }
 
         $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $stmt->close();
 
-        if ($stmt->execute()) {
-            return $stmt->affected_rows > 0
-                ? ["ok" => true, "mensaje" => "Usuario eliminado correctamente"]
-                : ["ok" => false, "mensaje" => "No se encontró el usuario."];
+        // Eliminar definitivamente al usuario.
+        // Los registros asociados se conservan mediante ON DELETE SET NULL.
+        $stmt = $conexion->prepare(
+            "DELETE FROM Usuario WHERE id_usuario = ?"
+        );
+
+        if (!$stmt) {
+            throw new Exception($conexion->error);
         }
 
-        if (strpos($stmt->error, "foreign key constraint fails") !== false) {
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+
+        $eliminado = $stmt->affected_rows;
+        $stmt->close();
+
+        if ($eliminado === 0) {
+            $conexion->rollback();
+
             return [
                 "ok" => false,
-                "mensaje" => "No se puede eliminar este usuario porque tiene incidencias o asignaciones de cuadrilla asociadas."
+                "mensaje" => "No se encontró el usuario."
             ];
         }
 
-        error_log("eliminar execute: " . $stmt->error);
-        return ["ok" => false, "mensaje" => "No se pudo eliminar el usuario"];
+        $conexion->commit();
+
+        return [
+            "ok" => true,
+            "mensaje" => "Usuario eliminado correctamente. Se conservaron sus registros asociados."
+        ];
+
+    } catch (Throwable $e) {
+
+        $conexion->rollback();
+
+        error_log("Error al eliminar usuario: " . $e->getMessage());
+
+        return [
+            "ok" => false,
+            "mensaje" => "No se pudo eliminar el usuario."
+        ];
     }
+}
 }
